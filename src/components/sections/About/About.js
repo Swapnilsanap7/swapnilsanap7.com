@@ -45,10 +45,10 @@ export default function About() {
   }, []);
 
   return (
-    <section className="relative min-h-[80vh] px-4 py-20 overflow-hidden" ref={containerRef}>
-      
+     <section className="relative w-full max-w-6xl mx-auto py-16 overflow-hidden" ref={containerRef}>
+
       {/* 3D Background Layer */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none z-0">
+      <div className="absolute inset-0 fixed-center opacity-20 pointer-events-none z-0">
         <StlViewer />
       </div>
 

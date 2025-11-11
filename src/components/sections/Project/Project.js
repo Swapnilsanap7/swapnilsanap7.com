@@ -1,6 +1,6 @@
 import ProjectCard from '@/components/ProjectCard';
 
-const project = [
+const projects = [
   {
     title: 'Portfolio Website',
     description: 'My personal website showcasing projects and skills.',
@@ -12,9 +12,8 @@ const project = [
   {
     title: 'RetailSense for E-commerce',
     description: 'A comprehensive e-commerce platform for retail businesses.',
-    techStack: ['react', 'Firebase', 'TailwindCSS'],
+    techStack: ['React', 'Firebase', 'TailwindCSS'],
     imageSrc: '/project/2.jpg',
-    
   },
   {
     title: 'Smart Restaurant',
@@ -32,12 +31,19 @@ const project = [
 
 export default function Project() {
   return (
-    <section id="project" className="flex flex-col items-center">
+    <section
+      id="project"
+      aria-label="Projects section"
+      className="w-full max-w-6xl mx-auto py-16"
+    >
       <div className="w-full max-w-[1600px] 2xl:max-w-[2000px] mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12 text-zinc-800 dark:text-white">Projects</h2>
-        <div className="grid gap-8 w-full sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {project.map((project) => (
-            <ProjectCard key={project.title} {...project} />
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-zinc-800 dark:text-white">
+          Projects
+        </h2>
+
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full">
+          {projects.map((proj) => (
+            <ProjectCard key={proj.title} {...proj} />
           ))}
         </div>
       </div>

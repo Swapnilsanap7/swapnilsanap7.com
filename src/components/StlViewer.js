@@ -8,16 +8,16 @@ import * as THREE from 'three';
 import { STLLoader } from 'three-stdlib';
 
 function Model() {
-  const geometry = useLoader(STLLoader, '/models/model.stl');
+  const rawGeometry = useLoader(STLLoader, '/models/model.stl');
   const meshRef = useRef();
 
   const [isDragging, setIsDragging] = useState(false);
   const [lastInteraction, setLastInteraction] = useState(Date.now());
-
   const hasReset = useRef(false);
-  const idleTime = 1000;
+  const idleTime = 1000; // 1 second idle
 
   const originalPose = { x: 0.3, z: 0.1 };
+  const rotationSpeed = useRef(0.01);
 
   const handleStart = () => {
     setIsDragging(true);
@@ -29,34 +29,45 @@ function Model() {
     setLastInteraction(Date.now());
   };
 
-  useFrame(() => {
+  useFrame((state) => {
     const mesh = meshRef.current;
     if (!mesh) return;
 
-    // Continuous Y rotation always
-    mesh.rotation.y += 0.01;
+    // Continuous Y rotation (paused while dragging)
+    if (!isDragging) mesh.rotation.y += rotationSpeed.current;
+
+    // Gentle floating effect
+    mesh.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
 
     const now = Date.now();
     const idle = now - lastInteraction;
 
-    // On idle and not already reset, tween X/Z
+    // Reset X/Z rotations after idle
     if (!isDragging && idle > idleTime && !hasReset.current) {
       gsap.to(mesh.rotation, {
         x: originalPose.x,
         z: originalPose.z,
         duration: 1.2,
         ease: 'power2.out',
-        onUpdate: () => mesh.rotation.needsUpdate = true,
+        onUpdate: () => (mesh.rotation.needsUpdate = true),
       });
+      gsap.to(rotationSpeed, { current: 0.01, duration: 0.5 });
       hasReset.current = true;
     }
   });
+
+  const geometry = useMemo(() => {
+    const g = rawGeometry.clone(); // avoid mutating cached geometry
+    g.computeBoundingBox();
+    g.center(); // moves geometry so center is at 0,0,0
+    return g;
+  }, [rawGeometry]);
 
   return (
     <mesh
       ref={meshRef}
       geometry={geometry}
-      scale={0.01}
+      scale={0.012}
       rotation={[originalPose.x, 0, originalPose.z]}
       onPointerDown={handleStart}
       onPointerUp={handleEnd}
@@ -73,19 +84,29 @@ function Model() {
   );
 }
 
-
 export default function StlViewer() {
   return (
     <div className="w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden shadow-lg">
-      <Canvas camera={{ position: [0, 0, 4], fov: 45 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[5, 5, 5]} intensity={1.2} />
+      <Canvas
+        camera={{ position: [0, 0, 6], fov: 45 }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, alpha: true }}
+      >
+        {/* Lighting */}
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 5, 10]} intensity={1} />
+        <directionalLight position={[-5, -5, -10]} intensity={0.3} />
+
         <Suspense fallback={null}>
           <Model />
         </Suspense>
+
         <OrbitControls enableZoom={false} enablePan={false} />
         <Environment preset="city" />
       </Canvas>
     </div>
   );
 }
+
+import { useMemo } from 'react';
+

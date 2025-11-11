@@ -105,7 +105,7 @@ export default function Hero() {
         {/* Buttons */}
         <div
           ref={buttonsRef}
-          className="flex flex-col gap-4 items-center md:items-start"
+          className="flex flex-col gap-4 items-center md:items-start mt-6"
         >
           <Link
             href="#contact"

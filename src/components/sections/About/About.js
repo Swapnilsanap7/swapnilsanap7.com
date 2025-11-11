@@ -45,34 +45,32 @@ export default function About() {
   }, []);
 
   return (
-     <section className="relative w-full max-w-6xl mx-auto py-16 overflow-hidden" ref={containerRef}>
-
+    <section
+      className="relative w-full max-w-6xl mx-auto py-16 overflow-hidden"
+      ref={containerRef}
+    >
       {/* 3D Background Layer */}
       <div className="absolute inset-0 fixed-center opacity-20 pointer-events-none z-0">
         <StlViewer />
       </div>
 
-       {/* Centered Section Title */}
+      {/* Centered Section Title */}
       <div className="relative z-10 text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-white">About Me</h2>
       </div>
 
       {/* Foreground Grid */}
       <div className="relative z-10 flex flex-col md:flex-row items-start justify-between gap-12 max-w-6xl mx-auto">
-        
         {/* Left: About Text */}
-        <div
-          ref={textRef}
-          className="flex-1 text-center md:text-left max-w-xl"
-        >
+        <div ref={textRef} className="flex-1 text-center md:text-left max-w-xl">
           <p className="text-gray-300 text-lg leading-7">
-            I'm a software developer with a passion for building full-stack applications that are clean, efficient, and user-centered.
+            I&apos;m a software developer with a passion for building full-stack applications that are clean, efficient, and user-centered.
           </p>
           <p className="text-gray-300 text-lg leading-7 mt-4">
             I love working on both frontend interfaces and backend systems...
           </p>
           <p className="text-gray-300 text-lg leading-7 mt-4">
-            I’ve worked across mobile apps, full-stack projects, and CMS-based platforms...
+            I&apos;ve worked across mobile apps, full-stack projects, and CMS-based platforms...
           </p>
           <p className="text-blue-400 text-base mt-6 italic">
             Fun fact: I sometimes refactor my personal projects just for fun.

@@ -171,7 +171,7 @@ export default function Contact() {
           Get In Touch
         </h2>
         <p className="text-[var(--dark)] dark:text-[var(--light)] text-lg mt-4 max-w-2xl mx-auto">
-          Let's build something amazing together. I'm always open to discussing new opportunities.
+          Let&apos;s build something amazing together. I&apos;m always open to discussing new opportunities.
         </p>
       </div>
 
@@ -189,7 +189,7 @@ export default function Contact() {
                 </svg>
                 <p className="text-green-400 font-medium">Message sent successfully!</p>
               </div>
-              <p className="text-green-300 text-sm mt-1">Thank you for reaching out. I'll get back to you soon!</p>
+              <p className="text-green-300 text-sm mt-1">Thank you for reaching out. I&apos;ll get back to you soon!</p>
             </div>
           )}
           
@@ -276,7 +276,7 @@ export default function Contact() {
                     ? 'border-red-500 focus:ring-red-400' 
                     : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400'
                 }`}
-                placeholder="What's this about?"
+                placeholder="What&apos;s this about?"
               />
               {errors.subject && <p className="text-red-400 text-sm mt-1">{errors.subject}</p>}
             </div>
@@ -333,7 +333,7 @@ export default function Contact() {
         <div ref={infoRef} className="flex-1 w-full max-w-md">
           <div className="bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl p-8 shadow-lg">
             <h3 className="text-2xl font-bold text-[var(--dark)] dark:text-white mb-6">
-              Let's Connect
+              Let&apos;s Connect
             </h3>
             
             <div className="space-y-6">
@@ -387,7 +387,7 @@ export default function Contact() {
             
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
               <p className="text-blue-600 dark:text-blue-400 text-sm italic text-center">
-                Ready to Connect? Let's make it happen! 🚀
+                Ready to Connect? Let&apos;s make it happen! 🚀
               </p>
             </div>
           </div>

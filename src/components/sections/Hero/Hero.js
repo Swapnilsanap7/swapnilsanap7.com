@@ -1,12 +1,12 @@
 'use client';
 
-import ResumeButton from '@/components/ResumeButton';
-import SectionWrapper from '@/components/SectionWrapper';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
+import SectionWrapper from '../../layout/SectionWrapper';
+import ResumeButton from '../../ui/ResumeButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,7 +60,7 @@ export default function Hero() {
   return (
     <SectionWrapper
       id="hero"
-      className="h-screen flex items-center justify-center"
+      className="min-h-[calc(100vh-6rem)] pt-3 flex items-center justify-center"
     >
       {/* Container ref moved here */}
       <div
@@ -73,7 +73,7 @@ export default function Hero() {
           className="flex-shrink-0 p-1 rounded-full bg-white/10 backdrop-blur-md shadow-xl overflow-hidden"
         >
           <Image
-            src="/swapnil.png"
+            src="/assets/images/swapnil.png"
             alt="Swapnil Sanap"
             width={300}
             height={300}

@@ -17,7 +17,7 @@ This is the repository for my personal portfolio website, built to showcase my s
 
 *   **Framework**: [Next.js](https://nextjs.org/)
 *   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-*   **Animation**: [GSAP](https://gsap.com/) & [Framer Motion](https://www.framer.com/motion/) (soon migrating to [Anime.js](https://animejs.com/))
+*   **Animation**: [GSAP](https://gsap.com/) for smooth, performant animations
 *   **3D Graphics**: [Three.js](https://threejs.org/) & [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
 *   **Deployment**: [Vercel](https://vercel.com/)
 

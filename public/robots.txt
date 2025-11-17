@@ -1,0 +1,22 @@
+# Robots.txt for Swapnil Sanap Portfolio
+# Allow all web crawlers to access the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://swapnilsanap7.com/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Disallow crawling of any admin or private areas
+# (Add specific paths here if needed in the future)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow crawling of important pages
+Allow: /
+Allow: /projects/
+Allow: /resume/

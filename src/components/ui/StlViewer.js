@@ -1,11 +1,13 @@
 'use client';
 
-import { Environment, OrbitControls } from '@react-three/drei';
+import { Environment } from '@react-three/drei';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { gsap } from 'gsap';
 import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { STLLoader } from 'three-stdlib';
+
+import { useMemo } from 'react';
 
 function Model() {
   const rawGeometry = useLoader(STLLoader, '/models/model.stl');
@@ -69,9 +71,6 @@ function Model() {
       geometry={geometry}
       scale={0.012}
       rotation={[originalPose.x, 0, originalPose.z]}
-      onPointerDown={handleStart}
-      onPointerUp={handleEnd}
-      onPointerLeave={handleEnd}
     >
       <meshStandardMaterial
         color="#5078f0"
@@ -86,7 +85,7 @@ function Model() {
 
 export default function StlViewer() {
   return (
-    <div className="w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden shadow-lg">
+    <div className="w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden">
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
         dpr={[1, 1.5]}
@@ -101,12 +100,9 @@ export default function StlViewer() {
           <Model />
         </Suspense>
 
-        <OrbitControls enableZoom={false} enablePan={false} />
         <Environment preset="city" />
       </Canvas>
     </div>
   );
 }
-
-import { useMemo } from 'react';
 

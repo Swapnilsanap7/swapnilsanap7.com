@@ -1,9 +1,13 @@
 'use client';
 
+import { gsap } from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { Caveat } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+
+gsap.registerPlugin(ScrollToPlugin);
 
 const caveat = Caveat({ subsets: ['latin'], weight: '700' });
 
@@ -38,21 +42,37 @@ export default function Navbar() {
     setIsDark(newTheme === 'dark');
   };
 
+  const handleSmoothScroll = (e, sectionId) => {
+    e.preventDefault();
+    const element = document.getElementById(sectionId);
+    if (element) {
+      // Use GSAP scrollTo to work with ScrollSmoother
+      gsap.to(window, {
+        duration: 1.5,
+        scrollTo: {
+          y: element,
+          offsetY: 80 // Account for navbar height
+        },
+        ease: "power2.inOut"
+      });
+    }
+  };
+
   return (
-    <nav className="fixed top-0 w-full z-50 bg-transparent">
-      <section className="py-4 px-8 flex justify-center items-center relative gap-4">
+    <nav className="top-0 w-full z-50 bg-transparent">
+      <section className="py-2 px-8 flex justify-center items-center relative gap-4">
         {/* Main Navigation Capsule */}
         <div className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-white/30 dark:border-gray-600/30 rounded-full px-8 py-4 shadow-lg flex items-center justify-between w-full max-w-4xl">
           
           {/* Left: Logo (stuck to left border) */}
           <Link href="/" className="flex items-center space-x-2">
             <Image 
-              src="/icon0.svg" 
+              src="/assets/favicons/main-logo.svg" 
               alt="Logo" 
               width={40} 
               height={40} 
               priority 
-              className={`transition-all duration-300 ${!isDark ? 'brightness-0' : 'brightness-100'}`}
+              className={`transition-all duration-300 ${isDark ? 'filter invert brightness-0 contrast-100' : 'filter-none'}`}
             />
             <span className={`${caveat.className} text-3xl text-gray-900 dark:text-white font-bold`}>Swapnil Sanap</span>
           </Link>
@@ -60,10 +80,11 @@ export default function Navbar() {
           {/* Right: Navigation Links (stuck to right border) */}
           <div className="flex items-center">
             {/* Desktop Nav */}
-            <div className="hidden md:flex space-x-8">
-              <Link href="#about" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">About</Link>
-              <Link href="#projects" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">Projects</Link>
-              <Link href="#contact" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">Contact</Link>
+            <div className="hidden md:flex space-x-6">
+              <Link href="#about" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'about')}>About</Link>
+              <Link href="#skills" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'skills')}>Skills</Link>
+              <Link href="#project" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'project')}>Projects</Link>
+              <Link href="#contact" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'contact')}>Contact</Link>
             </div>
 
             {/* Hamburger (Mobile) */}
@@ -98,15 +119,18 @@ export default function Navbar() {
             ✕
           </button>
 
-          {['about', 'projects', 'contact'].map((section, i) => (
+          {['about', 'skills', 'project', 'contact'].map((section, i) => (
             <Link
               key={section}
               href={`#${section}`}
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => {
+                handleSmoothScroll(e, section);
+                setMenuOpen(false);
+              }}
               className="text-gray-900 dark:text-white text-2xl font-medium transform transition-all translate-x-0 opacity-100 hover:text-blue-600 dark:hover:text-blue-400"
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
-              {section.charAt(0).toUpperCase() + section.slice(1)}
+              {section === 'project' ? 'Projects' : section.charAt(0).toUpperCase() + section.slice(1)}
             </Link>
           ))}
         </div>

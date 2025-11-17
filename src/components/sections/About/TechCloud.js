@@ -14,7 +14,7 @@ const techIcons = [
   '/icons/drupal.svg',
   '/icons/js.svg',
   '/icons/ts.svg',
-  '/icons/seo.svg',
+  '/icons/next.js.svg',
   '/icons/git.svg',
   '/icons/mysql.svg',
 ];
@@ -24,37 +24,39 @@ export default function TechCloud() {
   const containerRef = useRef(null);
   const tlRef = useRef(null);
 
+  // Turn icons into rows of 3 automatically
+  const rows = [];
+  for (let i = 0; i < techIcons.length; i += 3) {
+    rows.push(techIcons.slice(i, i + 3));
+  }
+
   useEffect(() => {
     const el = scrollRef.current;
 
-    tlRef.current = gsap.to(el, {
-      x: '-50%',
+    const tl = gsap.to(el, {
+      x: "-50%",
       duration: 20,
       repeat: -1,
-      ease: 'linear',
+      ease: "linear",
     });
 
-    const pause = () => tlRef.current.pause();
-    const play = () => tlRef.current.resume();
+    tlRef.current = tl;
 
-    el.addEventListener('mouseenter', pause);
-    el.addEventListener('mouseleave', play);
-
+    // Scroll fade effect
     gsap.from(containerRef.current, {
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
+        start: "top 85%",
+        once: true,
       },
       opacity: 0,
       y: 30,
       duration: 1,
-      ease: 'power2.out',
+      ease: "power2.out",
     });
 
     return () => {
-      el.removeEventListener('mouseenter', pause);
-      el.removeEventListener('mouseleave', play);
+      tl.kill(); // IMPORTANT cleanup
     };
   }, []);
 
@@ -71,14 +73,20 @@ export default function TechCloud() {
         maskRepeat: 'no-repeat',
       }}
     >
-      <div ref={scrollRef} className="flex gap-12 w-[200%]">
+      <div
+        ref={scrollRef}
+        className="flex gap-12 w-[200%]"
+        style={{ willChange: 'transform' }}
+        onMouseEnter={() => tlRef.current?.pause()}
+        onMouseLeave={() => tlRef.current?.resume()}
+      >
         {[...Array(2)].map((_, cloneIdx) => (
           <div key={cloneIdx} className="flex flex-col gap-4">
-            {[0, 1, 2].map((row) => (
-              <div key={row} className={`flex gap-4 ${row % 2 !== 0 ? 'ml-6' : ''}`}>
-                {techIcons.slice(row * 3, row * 3 + 3).map((src, i) => (
+            {rows.map((row, i) => (
+              <div key={i} className={`flex gap-4 ${i % 2 !== 0 ? 'ml-6' : ''}`}>
+                {row.map((src, j) => (
                   <div
-                    key={i}
+                    key={j}
                     className="transition-transform duration-300 hover:scale-125 hover:drop-shadow-lg"
                   >
                     <Image

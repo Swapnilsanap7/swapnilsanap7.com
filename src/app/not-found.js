@@ -31,10 +31,13 @@ export default function NotFound() {
     <>
       <Head>
         <title>404 - Page Not Found | Swapnil Sanap</title>
-        <meta name="description" content="Page not found. Return to Swapnil Sanap's portfolio homepage to explore projects and skills." />
+        <meta
+          name="description"
+          content="Page not found. Return to Swapnil Sanap&apos;s portfolio homepage to explore projects and skills."
+        />
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      
+
       <div className="min-h-screen bg-[var(--light)] dark:bg-[var(--dark)] text-[var(--dark)] dark:text-green-400 font-mono flex flex-col items-center justify-center px-4 py-10 text-center">
         <div ref={bugRef}>
           <Image
@@ -51,8 +54,10 @@ export default function NotFound() {
           <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-[var(--dark)] dark:text-green-400">
             🐛 404 - Page Not Found
           </h1>
+
+          {/* FIXED LINE HERE */}
           <p className="text-lg text-[var(--dark)]/70 dark:text-emerald-300 mb-6">
-            That's a bug... or maybe a feature?
+            That&apos;s a bug... or maybe a feature?
           </p>
 
           <CodeSnippet className="max-w-md mx-auto mt-6">
@@ -83,7 +88,7 @@ export default function NotFound() {
             >
               Debug your way back home
             </Link>
-            
+
             <Link
               href="/#projects"
               className="text-green-400 hover:text-green-300 transition-colors font-medium"

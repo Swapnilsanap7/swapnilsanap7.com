@@ -11,15 +11,15 @@ const projectsData = {
     displayType: 'browser', // Force browser mockup for web projects
     demo: 'https://swapnilsanap7.com',
     github: 'https://github.com/swapnilsanap7/Personal-Portfolio',
-    image: '/project/1.jpg',
+    image: '/project/portfolio/web.png',
     fullDescription: 'A modern, responsive portfolio website built with Next.js and TailwindCSS. Features smooth animations, dark mode support, and a clean design showcasing my development skills and projects.',
     techStack: ['Next.js', 'TailwindCSS', 'Framer Motion'],
-    imageSrc: '/project/1.jpg',
+    imageSrc: '/project/portfolio/web.png',
     githubLink: 'https://github.com/swapnilsanap7/Personal-Portfolio',
     liveDemoLink: 'https://swapnilsanap7.com',
     hero: {
       tagline: 'A modern portfolio showcasing my development journey',
-      mainImage: '/project/1.jpg'
+      mainImage: '/project/portfolio/web.png'
     },
     features: [
       { icon: '⚡', title: 'Fast Performance', description: 'Optimized loading and smooth animations' },
@@ -33,9 +33,9 @@ const projectsData = {
       { name: 'Framer Motion', icon: '/icons/react.svg', description: 'Animation library for React' }
     ],
     gallery: [
-      '/project/portfolio/1.jpg',
-      '/project/1.jpg',
-      '/project/1.jpg'
+      '/project/portfolio/web.png',
+      '/project/portfolio/web2.png',
+      '/project/portfolio/web3.png'
     ],
     caseStudy: {
       challenge: 'Creating a portfolio that stands out while maintaining clean, professional design and optimal performance.',
@@ -73,9 +73,9 @@ const projectsData = {
     { name: 'JavaScript', icon: '/icons/js.svg', description: 'Interactive components and animations' }
   ],
   gallery: [
-    '/project/E-Commerce/main.jpg',   // Add correct screenshots
-    '/project/E-Commerce/ecommerce-2.jpg',   // Add correct screenshots
-    '/project/E-Commerce/ecommerce-3.jpg'
+    '/project/E-Commerce/main.jpg',  
+    '/project/E-Commerce/web2.png',
+    '/project/E-Commerce/web3.png'
   ],
   caseStudy: {
     challenge:

@@ -7,7 +7,7 @@ const projects = [
     title: 'Portfolio Website',
     description: 'My personal website showcasing projects and skills.',
     techStack: ['Next.js', 'TailwindCSS', 'Framer Motion'],
-    imageSrc: '/project/1.jpg',
+    imageSrc: '/project/portfolio/1.jpg',
     githubLink: 'https://github.com/swapnilsanap7/Personal-Portfolio',
     liveDemoLink: 'https://swapnilsanap7.com',
   },

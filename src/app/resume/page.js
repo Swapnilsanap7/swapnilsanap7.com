@@ -72,15 +72,15 @@ export default function ResumePage() {
           Download Resume
         </a>
         
-        <a
-          href="mailto:swapnilsanap7@gmail.com?subject=Job%20Opportunity&body=Hi%20Swapnil,%20I%20reviewed%20your%20resume%20and%20would%20like%20to%20discuss%20a%20potential%20opportunity."
+        <Link
+          href="/#contact"
           className="inline-flex items-center gap-2 px-6 py-3 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors font-medium"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
           Contact Me
-        </a>
+        </Link>
       </div>
 
       {/* Navigation */}

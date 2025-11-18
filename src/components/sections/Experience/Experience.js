@@ -165,7 +165,7 @@ export default function Experience() {
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full dark:bg-transparent bg-white p-2 shadow-md relative transition-transform duration-300 hover:scale-110">
                       <Image
-                        src="/UIS Dome Logo/UISLegacyDome_UISBlue.png"
+                        src="/logo/UIS Dome Logo/UISLegacyDome_UISBlue.png"
                         alt="UIS Logo"
                         width={32}
                         height={32}
@@ -371,7 +371,7 @@ export default function Experience() {
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full dark:bg-transparent bg-white p-2 shadow-md relative transition-transform duration-300 hover:scale-110">
                       <Image
-                        src="/UIS Dome Logo/UISLegacyDome_UISBlue.png"
+                        src="/logo/UIS Dome Logo/UISLegacyDome_UISBlue.png"
                         alt="UIS Logo"
                         width={32}
                         height={32}
@@ -475,7 +475,7 @@ export default function Experience() {
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full dark:bg-transparent bg-white p-2 shadow-md relative">
                     <Image
-                      src="/UIS Dome Logo/UISLegacyDome_UISBlue.png"
+                      src="/logo/UIS Dome Logo/UISLegacyDome_UISBlue.png"
                       alt="UIS Logo"
                       width={32}
                       height={32}
@@ -506,7 +506,7 @@ export default function Experience() {
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full dark:bg-transparent bg-white p-2 shadow-md relative">
                     <Image
-                      src="/UIS Dome Logo/UISLegacyDome_UISBlue.png"
+                      src="/logo/UIS Dome Logo/UISLegacyDome_UISBlue.png"
                       alt="UIS Logo"
                       width={32}
                       height={32}

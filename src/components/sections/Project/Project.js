@@ -33,6 +33,8 @@ const projects = [
     description: 'A split expense tracker for groups.',
     techStack: ['Next.js', 'TailwindCSS', 'Firebase'],
     imageSrc: '/project/splitxpense/web-mini.png',
+    githubLink: 'https://github.com/Swapnilsanap7/splitexpense-web',
+    liveDemoLink: 'https://splitexpense-web.vercel.app',
   },
 ];
 

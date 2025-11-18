@@ -83,8 +83,95 @@ const projectsData = {
     solution:
       'Created a fully responsive layout with smooth animations, intuitive sections, and optimized styling for a premium ecommerce feel.'
   }
-}
+},
+ 'splitxpense': { 
+  slug: 'splitxpense',
+  title: 'SplitExpense – Bill Splitting Web App',
+  subtitle: 'A seamless way to split bills, track expenses, and settle balances',
+  description: 'A full-stack expense-splitting web application designed to simplify shared expenses with friends, roommates, or groups.',
+  displayType: 'browser',
+  demo: 'https://splitexpense-web.vercel.app', // If your deployed link differs, tell me & I’ll update
+  github: 'https://github.com/Swapnilsanap7/splitexpense-web',
+  image: '/project/splitxpense/web.png',
 
+  fullDescription:
+    'SplitExpense is a modern bill-splitting platform built to make sharing expenses effortless. It enables users to create groups, add expenses, split costs evenly or unevenly, track balances, and settle up in real time. Designed with a clean UI, secure backend, and optimized workflows to ensure transparency and convenience for group finances.',
+
+  techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'TailwindCSS'],
+
+  imageSrc: '/project/splitexpense/cover.png',
+  githubLink: 'https://github.com/Swapnilsanap7/splitexpense-web',
+  liveDemoLink: 'https://splitexpense-web.vercel.app',
+
+  hero: {
+    tagline: 'Easily split bills, track expenses, and settle balances effortlessly.',
+    mainImage: '/project/splitxpense/web.png'
+  },
+
+  features: [
+    {
+      icon: '👥',
+      title: 'Group Management',
+      description: 'Create groups and manage shared expenses efficiently.'
+    },
+    {
+      icon: '💸',
+      title: 'Smart Bill Splitting',
+      description: 'Split evenly or assign custom shares to each person.'
+    },
+    {
+      icon: '📊',
+      title: 'Clear Balance Tracking',
+      description: 'View how much you owe or are owed in real time.'
+    },
+    {
+      icon: '⚡',
+      title: 'Modern UI',
+      description: 'Clean, intuitive, responsive interface built for ease of use.'
+    }
+  ],
+
+  techStackDetailed: [
+    {
+      name: 'React',
+      icon: '/icons/react.svg',
+      description: 'Component-based UI for interactive, dynamic screens.'
+    },
+    {
+      name: 'Node.js',
+      icon: '/icons/node.svg',
+      description: 'JavaScript runtime powering the backend APIs.'
+    },
+    {
+      name: 'Express',
+      icon: '/icons/express.svg',
+      description: 'Minimal backend framework for RESTful APIs.'
+    },
+    {
+      name: 'MongoDB',
+      icon: '/icons/mongodb.svg',
+      description: 'NoSQL database for group, user, and expense data.'
+    },
+    {
+      name: 'TailwindCSS',
+      icon: '/icons/tailwind.svg',
+      description: 'Utility-first framework enabling fast, consistent styling.'
+    }
+  ],
+
+  gallery: [
+    '/project/splitxpense/web.png',
+    '/project/splitxpense/web1.png',
+    '/project/splitxpense/web2.png'
+  ],
+
+  caseStudy: {
+    challenge:
+      'Managing shared expenses in groups often becomes messy with manual tracking, leading to confusion and errors.',
+    solution:
+      'Built a structured platform with group-based tracking, smart splitting algorithms, and real-time balance updates. The application emphasizes simplicity, accuracy, and modern UI/UX to make expense sharing effortless.'
+  }
+},
   // Add other projects as needed
 };
 

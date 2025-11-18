@@ -22,10 +22,10 @@ const projects = [
   },
   {
     slug: 'smartmenu-plus',
-    title: 'SmartMenu+',
-    description: 'A SmartMenu+ management system.',
+    title: 'Project 4: Classified 🔒',
+    description: 'It is not Classified.',
     techStack: ['Next.js', 'Sanity', 'TailwindCSS'],
-    imageSrc: '/project/3.jpg',
+    imageSrc: '/project/404.png',
   },
   {
     slug: 'splitxpense',

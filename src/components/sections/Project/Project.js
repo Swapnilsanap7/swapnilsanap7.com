@@ -31,8 +31,8 @@ const projects = [
     slug: 'splitxpense',
     title: 'SplitXpense',
     description: 'A split expense tracker for groups.',
-    techStack: ['React', 'OpenWeather API', 'TailwindCSS'],
-    imageSrc: '/project/4.jpg',
+    techStack: ['Next.js', 'TailwindCSS', 'Firebase'],
+    imageSrc: '/project/splitxpense/web-mini.png',
   },
 ];
 

@@ -49,4 +49,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## ☁️ Deployment
 
-This project is not yet deployed. For deployment details, refer to the [Next.js documentation](https://nextjs.org/docs/app/building-your-application/deploying).
+This project is deployed at Vercel. Check it out at [here](http://swapnilsanap7.com) or at top.

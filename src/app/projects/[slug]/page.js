@@ -172,6 +172,46 @@ const projectsData = {
       'Built a structured platform with group-based tracking, smart splitting algorithms, and real-time balance updates. The application emphasizes simplicity, accuracy, and modern UI/UX to make expense sharing effortless.'
   }
 },
+
+'progate-to-modern-web': {
+  slug: 'progate-to-modern-web',
+  title: 'Progate → Modern Web',
+  subtitle: 'Evolution of my web development journey',
+  description: 'A modernized version of a college-era website originally built via Progate, reworked using modern HTML5, CSS3 and JavaScript best practices.',
+  displayType: 'browser',
+  demo: 'https://swapnilsanap7.github.io/web.io',     // update if your live URL differs
+  github: 'https://github.com/Swapnilsanap7/web.io',
+  image: '/project/webio/web.png',                // adjust to your actual image path
+  fullDescription: 'This project revisits an original site I built during college with Progate, and rebuilds it using semantic HTML5, responsive CSS (Flexbox & Grid), performance-optimised assets and minimal JavaScript. It showcases how my skills have grown from learning to building with best practices in mind.',
+  techStack: ['HTML5', 'CSS3', 'Vanilla JavaScript'],
+  imageSrc: '/project/webio/web.png',
+  githubLink: 'https://github.com/Swapnilsanap7/web.io',
+  liveDemoLink: 'https://swapnilsanap7.github.io/web.io',
+  hero: {
+    tagline: 'Then vs Now — my web dev evolution',
+    mainImage: '/project/webio/web.png'
+  },
+  features: [
+    { icon: '🧭', title: 'Semantic HTML5', description: 'Well-structured, accessible markup throughout.' },
+    { icon: '⚙️', title: 'Modern CSS Architecture', description: 'Flexbox & Grid layouts, variables, and smooth animations.' },
+    { icon: '🚀', title: 'Performance Optimised', description: 'Minified assets, optimised images and minimal JS overhead.' },
+    { icon: '🔁', title: 'Responsive First', description: 'Mobile-first design that adapts seamlessly across devices.' }
+  ],
+  techStackDetailed: [
+    { name: 'HTML5', icon: '/icons/html.svg', description: 'Semantic markup, accessibility-ready.' },
+    { name: 'CSS3', icon: '/icons/css.svg', description: 'Flexible layout with Flexbox & Grid, custom properties and animations.' },
+    { name: 'JavaScript', icon: '/icons/js.svg', description: 'Vanilla JS for interactive enhancements—kept light for performance.' }
+  ],
+  gallery: [
+    '/project/webio/web.png',
+    '/project/webio/web1.png',
+  ],
+  caseStudy: {
+    challenge: 'Modernise an original college-era website while preserving its content and essence, and ensure it was performant, accessible and responsive.',
+    solution: 'Rebuilt the entire site using semantic HTML5, structured CSS with Flexbox & Grid, optimised assets, and implemented a mobile-first responsive design with minimal JavaScript to maintain performance and usability.'
+  }
+},
+
   // Add other projects as needed
 };
 

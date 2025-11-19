@@ -21,11 +21,13 @@ const projects = [
     liveDemoLink: 'https://swapnilsanap7.github.io/Ecommerce-Showcase/',
   },
   {
-    slug: 'smartmenu-plus',
-    title: 'Project 4: Classified 🔒',
+    slug: 'progate-to-modern-web',
+    title: 'progate-to-modern-web',
     description: 'It is not Classified.',
-    techStack: ['Next.js', 'Sanity', 'TailwindCSS'],
-    imageSrc: '/project/404.png',
+    techStack: ['HTML', 'CSS', 'JavaScript'],
+    imageSrc: '/project/webio/web-mini.png',
+    githubLink: 'https://github.com/Swapnilsanap7/web.io',
+    liveDemoLink: 'https://swapnilsanap7.github.io/web.io',
   },
   {
     slug: 'splitxpense',

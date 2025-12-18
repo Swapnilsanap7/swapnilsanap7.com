@@ -79,10 +79,11 @@ export default function Navbar() {
 
           {/* Right: Navigation Links (stuck to right border) */}
           <div className="flex items-center">
-            {/* Desktop Nav */}
+            {/* Desktop Nav */} 
             <div className="hidden md:flex space-x-6">
               <Link href="#about" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'about')}>About</Link>
               <Link href="#skills" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'skills')}>Skills</Link>
+              <Link href="#experience" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'experience')}>Experience</Link>
               <Link href="#project" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'project')}>Projects</Link>
               <Link href="#contact" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'contact')}>Contact</Link>
             </div>

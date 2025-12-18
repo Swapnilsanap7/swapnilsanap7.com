@@ -33,8 +33,8 @@ Make sure you have Node.js and npm installed on your machine.
 
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/swapnilsanap7/Personal-Portfolio.git
-    cd Personal-Portfolio
+    git clone https://github.com/swapnilsanap7/swapnilsanap7.com.git
+    cd swapnilsanap7.com
     ```
 2.  Install the dependencies:
     ```bash

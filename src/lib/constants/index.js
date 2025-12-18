@@ -13,7 +13,7 @@ export const SITE_CONFIG = {
   links: {
     github: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/Swapnilsanap7',
     linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://www.linkedin.com/in/swapnilsanap7/',
-    email: process.env.NEXT_PUBLIC_EMAIL || 'swapnilsanap7@gmail.com',
+    email: process.env.NEXT_PUBLIC_EMAIL || 'hello@swapnilsanap7.com',
   },
 };
 

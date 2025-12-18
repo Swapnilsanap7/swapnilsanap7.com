@@ -65,7 +65,7 @@ export default function Footer() {
             <Link href="https://www.linkedin.com/in/swapnilsanap7/" target="_blank" aria-label="LinkedIn">
               <SiLinkedin className="hover:text-black dark:hover:text-white transition" />
             </Link>
-            <Link href="mailto:swapnilsanap7@gmail.com" aria-label="Email">
+            <Link href="mailto:hello@swapnilsanap7.com" aria-label="Email">
               <SiGmail className="hover:text-black dark:hover:text-white transition" />
             </Link>
           </div>

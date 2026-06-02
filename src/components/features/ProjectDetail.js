@@ -4,7 +4,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { trackGithubClick, trackProjectView } from '../../lib/config/analytics';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +22,8 @@ export default function ProjectDetail({ project }) {
   const imageRef = useRef(null);
 
   useEffect(() => {
+    trackProjectView(project.title);
+
     const ctx = gsap.context(() => {
       // Back button animation
       gsap.from(backButtonRef.current, {
@@ -128,7 +131,7 @@ export default function ProjectDetail({ project }) {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [project.title]);
 
   const openModal = (index) => {
     setSelectedImage(index);
@@ -142,17 +145,26 @@ export default function ProjectDetail({ project }) {
     document.body.style.overflow = 'unset'; // Restore scroll
   };
 
-  const nextImage = () => {
-    if (project.gallery && selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % project.gallery.length);
-    }
-  };
+  const nextImage = useCallback(() => {
+    if (!project.gallery) return;
 
-  const prevImage = () => {
-    if (project.gallery && selectedImage !== null) {
-      setSelectedImage(selectedImage === 0 ? project.gallery.length - 1 : selectedImage - 1);
-    }
-  };
+    setSelectedImage((current) => {
+      if (current === null) return 0;
+      return (current + 1) % project.gallery.length;
+    });
+  }, [project.gallery]);
+
+  const prevImage = useCallback(() => {
+    if (!project.gallery) return;
+
+    setSelectedImage((current) => {
+      if (current === null) return 0;
+
+      return current === 0
+        ? project.gallery.length - 1
+        : current - 1;
+    });
+  }, [project.gallery]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -174,7 +186,7 @@ export default function ProjectDetail({ project }) {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isModalOpen, selectedImage]);
+  }, [isModalOpen, nextImage, prevImage]);
 
   return (
     <div className="min-h-screen ">
@@ -247,6 +259,7 @@ export default function ProjectDetail({ project }) {
                   <Link
                     href={project.githubLink}
                     target="_blank"
+                    onClick={() => trackGithubClick('project')}
                     className="bg-transparent border-2 border-[var(--dark)]/20 dark:border-white/20 hover:bg-[var(--dark)]/10 dark:hover:bg-white/10 text-[var(--dark)] dark:text-white px-6 py-3 sm:px-8 sm:py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-lg backdrop-blur-sm"
                   >
                     GitHub Repo
@@ -524,6 +537,7 @@ export default function ProjectDetail({ project }) {
                 <Link
                   href={project.githubLink}
                   target="_blank"
+                  onClick={() => trackGithubClick('project')}
                   className="bg-transparent border-2 border-[var(--dark)]/20 dark:border-white/20 hover:bg-[var(--dark)]/10 dark:hover:bg-white/10 text-[var(--dark)] dark:text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
                 >
                   View Source Code

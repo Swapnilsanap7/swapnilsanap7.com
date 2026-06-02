@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { trackResumeDownload } from '../../lib/config/analytics';
+import { trackResumeView } from '../../lib/config/analytics';
 
 export default function ResumeButton() {
   const [hovered, setHovered] = useState(false);
@@ -66,7 +66,7 @@ export default function ResumeButton() {
       target="_blank"
       rel="noopener noreferrer"
       className="w-full max-w-xs"
-      onClick={() => trackResumeDownload()}
+      onClick={() => trackResumeView('hero')}
     >
       <div
         ref={containerRef}

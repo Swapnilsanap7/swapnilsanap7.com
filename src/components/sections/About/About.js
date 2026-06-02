@@ -2,10 +2,11 @@
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, lazy, Suspense } from 'react';
 import SectionWrapper from '../../layout/SectionWrapper';
-import StlViewer from '../../ui/StlViewer';
 import TechCloud from './TechCloud';
+
+const StlViewer = lazy(() => import('../../ui/StlViewer'));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,7 +52,9 @@ export default function About() {
     >
       {/* 3D Background Layer - Positioned in center */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none z-0 w-96 h-96">
-        <StlViewer />
+        <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-gray-400">Loading 3D Model...</div>}>
+          <StlViewer />
+        </Suspense>
       </div>
 
       {/* Centered Section Title */}

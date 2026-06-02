@@ -110,7 +110,7 @@ export const SEO_IMAGES = {
   favicon: '/favicon.ico',
 };
 
-export default {
+const assets = {
   IMAGES,
   DOCUMENTS,
   FAVICONS,
@@ -119,3 +119,5 @@ export default {
   ASSET_CONFIG,
   SEO_IMAGES,
 };
+
+export default assets;

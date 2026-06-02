@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { trackGithubClick, trackProjectCardClick } from '../../lib/config/analytics';
 
 export default function ProjectCard({
   title,
@@ -42,6 +45,7 @@ export default function ProjectCard({
           {/* Primary Action - View Details */}
           <Link
             href={`/projects/${slug}`}
+            onClick={() => trackProjectCardClick(title)}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-center transform hover:scale-105"
           >
             View Details
@@ -66,6 +70,7 @@ export default function ProjectCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${title} GitHub repository`}
+                onClick={() => trackGithubClick('project')}
                 className="flex-1 border border-white/30 hover:border-white/60 hover:bg-white/10 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-center"
               >
                 GitHub

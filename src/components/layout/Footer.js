@@ -6,6 +6,11 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
 import { SiGithub, SiGmail, SiLinkedin } from 'react-icons/si';
+import {
+  trackEmailClick,
+  trackGithubClick,
+  trackLinkedinClick,
+} from '../../lib/config/analytics';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,13 +64,27 @@ export default function Footer() {
 
           {/* Right: Socials */}
           <div className="flex space-x-5 text-xl order-1 md:order-2">
-            <Link href="https://github.com/Swapnilsanap7" target="_blank" aria-label="GitHub">
+            <Link
+              href="https://github.com/Swapnilsanap7"
+              target="_blank"
+              aria-label="GitHub"
+              onClick={() => trackGithubClick('footer')}
+            >
               <SiGithub className="hover:text-black dark:hover:text-white transition" />
             </Link>
-            <Link href="https://www.linkedin.com/in/swapnilsanap7/" target="_blank" aria-label="LinkedIn">
+            <Link
+              href="https://www.linkedin.com/in/swapnilsanap7/"
+              target="_blank"
+              aria-label="LinkedIn"
+              onClick={() => trackLinkedinClick('footer')}
+            >
               <SiLinkedin className="hover:text-black dark:hover:text-white transition" />
             </Link>
-            <Link href="mailto:hello@swapnilsanap7.com" aria-label="Email">
+            <Link
+              href="mailto:hello@swapnilsanap7.com"
+              aria-label="Email"
+              onClick={() => trackEmailClick('footer')}
+            >
               <SiGmail className="hover:text-black dark:hover:text-white transition" />
             </Link>
           </div>

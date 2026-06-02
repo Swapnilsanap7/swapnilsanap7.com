@@ -304,7 +304,7 @@ export const createTimeline = (animations = []) => {
   return tl;
 };
 
-export default {
+const animations = {
   fadeIn,
   scaleIn,
   slideInLeft,
@@ -316,3 +316,5 @@ export default {
   typewriter,
   createTimeline,
 };
+
+export default animations;

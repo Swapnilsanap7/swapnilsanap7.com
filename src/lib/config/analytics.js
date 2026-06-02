@@ -15,12 +15,13 @@ export const pageview = (url) => {
 };
 
 // Log specific events
-export const event = ({ action, category, label, value }) => {
+export const event = ({ action, category, label, value, params = {} }) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', action, {
       event_category: category,
       event_label: label,
       value: value,
+      ...params,
     });
   }
 };
@@ -31,15 +32,27 @@ export const trackContactForm = (method) => {
     action: 'contact_form_submit',
     category: 'engagement',
     label: method,
+    params: { method },
+  });
+};
+
+// Track resume views
+export const trackResumeView = (location = 'unknown') => {
+  event({
+    action: 'resume_view',
+    category: 'engagement',
+    label: location,
+    params: { location },
   });
 };
 
 // Track resume downloads
-export const trackResumeDownload = () => {
+export const trackResumeDownload = (location = 'unknown') => {
   event({
     action: 'resume_download',
     category: 'engagement',
     label: 'pdf',
+    params: { location },
   });
 };
 
@@ -49,5 +62,53 @@ export const trackProjectView = (projectName) => {
     action: 'project_view',
     category: 'engagement',
     label: projectName,
+    params: { project_name: projectName },
+  });
+};
+
+// Track project card clicks
+export const trackProjectCardClick = (projectName) => {
+  event({
+    action: 'project_card_click',
+    category: 'engagement',
+    label: projectName,
+    params: { project_name: projectName },
+  });
+};
+
+// Track outbound social/contact clicks
+export const trackGithubClick = (location = 'unknown') => {
+  event({
+    action: 'github_click',
+    category: 'engagement',
+    label: location,
+    params: { location },
+  });
+};
+
+export const trackLinkedinClick = (location = 'unknown') => {
+  event({
+    action: 'linkedin_click',
+    category: 'engagement',
+    label: location,
+    params: { location },
+  });
+};
+
+export const trackEmailClick = (location = 'unknown') => {
+  event({
+    action: 'email_click',
+    category: 'engagement',
+    label: location,
+    params: { location },
+  });
+};
+
+// Track contact section visibility
+export const trackContactSectionView = () => {
+  event({
+    action: 'contact_section_view',
+    category: 'engagement',
+    label: 'contact',
   });
 };

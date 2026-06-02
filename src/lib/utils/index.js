@@ -217,7 +217,7 @@ export const getContrastColor = (hexColor) => {
   return luminance > 0.5 ? 'black' : 'white';
 };
 
-export default {
+const utils = {
   formatDate,
   debounce,
   throttle,
@@ -232,3 +232,5 @@ export default {
   validateEmail,
   getContrastColor,
 };
+
+export default utils;

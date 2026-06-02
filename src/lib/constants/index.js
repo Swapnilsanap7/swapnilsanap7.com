@@ -154,7 +154,7 @@ export const FORM_CONFIG = {
   },
 };
 
-export default {
+const constants = {
   SITE_CONFIG,
   ANIMATION_CONFIG,
   THEME,
@@ -163,3 +163,5 @@ export default {
   PROJECT_CATEGORIES,
   FORM_CONFIG,
 };
+
+export default constants;

@@ -2,13 +2,42 @@
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 import SectionWrapper from '../../layout/SectionWrapper';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Top 5 skills data
+const topSkills = [
+  { name: 'React.js', level: 95, icon: '/icons/react.svg', projectLink: '#projects' },
+  { name: 'Next.js', level: 90, icon: '/icons/next.js.svg', projectLink: '#projects' },
+  { name: 'JavaScript (ES6+)', level: 93, icon: '/icons/js.svg', projectLink: '#projects' },
+  { name: 'React Native', level: 85, icon: '/icons/react.svg', projectLink: '#projects' },
+  { name: 'Node.js', level: 88, icon: '/icons/node.svg', projectLink: '#projects' }
+];
+
+// Additional skills grouped by category
+const additionalSkills = [
+  {
+    category: 'Frontend Basics',
+    skills: ['HTML', 'CSS', 'Tailwind', 'Responsive UI', 'Accessibility']
+  },
+  {
+    category: 'Backend & Databases',
+    skills: ['REST APIs', 'Express.js', 'PostgreSQL', 'MySQL']
+  },
+  {
+    category: 'Tools & Testing',
+    skills: ['Git', 'GitHub', 'CI/CD', 'Selenium', 'Jest']
+  },
+  {
+    category: 'AI/ML Basics',
+    skills: ['Python', 'TensorFlow', 'OpenCV', 'Analytics', 'SEO']
+  }
+];
+
 export default function Skills() {
-  const [hasAnimated, setHasAnimated] = useState(false);
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const skillCardsRef = useRef([]);
@@ -22,7 +51,6 @@ export default function Skills() {
           trigger: titleRef.current,
           start: 'top 80%',
           toggleActions: 'play none none none',
-          onEnter: () => setHasAnimated(true)
         },
         opacity: 0,
         y: -20,
@@ -85,15 +113,6 @@ export default function Skills() {
     return () => ctx.revert();
   }, []);
 
-  // Top 5 skills data
-  const topSkills = [
-    { name: 'React.js', level: 95, icon: '/icons/react.svg', projectLink: '#projects' },
-    { name: 'Next.js', level: 90, icon: '/icons/next.js.svg', projectLink: '#projects' },
-    { name: 'JavaScript (ES6+)', level: 93, icon: '/icons/js.svg', projectLink: '#projects' },
-    { name: 'React Native', level: 85, icon: '/icons/react.svg', projectLink: '#projects' },
-    { name: 'Node.js', level: 88, icon: '/icons/node.svg', projectLink: '#projects' }
-  ];
-
   // Handle icon click (hidden feature)
   const handleIconClick = (skill) => {
     // Smooth scroll to projects section to show related work
@@ -102,26 +121,6 @@ export default function Skills() {
       block: 'start'
     });
   };
-
-  // Additional skills grouped by category
-  const additionalSkills = [
-    {
-      category: 'Frontend Basics',
-      skills: ['HTML', 'CSS', 'Tailwind', 'Responsive UI', 'Accessibility']
-    },
-    {
-      category: 'Backend & Databases',
-      skills: ['REST APIs', 'Express.js', 'PostgreSQL', 'MySQL']
-    },
-    {
-      category: 'Tools & Testing',
-      skills: ['Git', 'GitHub', 'CI/CD', 'Selenium', 'Jest']
-    },
-    {
-      category: 'AI/ML Basics',
-      skills: ['Python', 'TensorFlow', 'OpenCV', 'Analytics', 'SEO']
-    }
-  ];
 
   return (
     <SectionWrapper id="skills">
@@ -160,9 +159,11 @@ export default function Skills() {
                     onClick={() => handleIconClick(skill)}
                     title="Click to see related projects"
                   >
-                    <img 
+                    <Image 
                       src={skill.icon} 
                       alt={skill.name}
+                      width={32}
+                      height={32}
                       className={`w-8 h-8 object-contain transition-all duration-300 opacity-90 group-hover:opacity-100 contrast-125 ${
                         skill.name === 'Next.js' 
                           ? 'dark:filter dark:brightness-0 dark:invert' 
@@ -204,9 +205,11 @@ export default function Skills() {
                   onClick={() => handleIconClick(topSkills[4])}
                   title="Click to see related projects"
                 >
-                  <img 
+                  <Image 
                     src={topSkills[4].icon} 
                     alt={topSkills[4].name}
+                    width={32}
+                    height={32}
                     className={`w-8 h-8 object-contain transition-all duration-300 opacity-90 group-hover:opacity-100 contrast-125 ${
                       topSkills[4].name === 'Node.js' 
                         ? '' 

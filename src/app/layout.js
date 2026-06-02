@@ -1,4 +1,5 @@
 import { Caveat } from 'next/font/google';
+import Script from 'next/script';
 import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 import SmoothScrollWrapper from '../components/layout/SmoothScrollWrapper';
@@ -143,20 +144,20 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* Google Analytics */}
-        <script 
-          async 
+        <Script 
           src="https://www.googletagmanager.com/gtag/js?id=G-LDPKRE8CFP"
+          strategy="afterInteractive"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-LDPKRE8CFP');
-            `,
-          }}
-        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-LDPKRE8CFP', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
         
         {/* Structured Data */}
         <script

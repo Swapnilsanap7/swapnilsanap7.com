@@ -6,9 +6,9 @@ const projects = [
     slug: 'portfolio-website',
     title: 'Portfolio Website',
     description: 'My personal website showcasing projects and skills.',
-    techStack: ['Next.js', 'TailwindCSS', 'Framer Motion'],
+    techStack: ['Next.js', 'TailwindCSS', 'GSAP'],
     imageSrc: '/project/portfolio/1.jpg',
-    githubLink: 'https://github.com/swapnilsanap7/Personal-Portfolio',
+    githubLink: 'https://github.com/swapnilsanap7/swapnilsanap7.com',
     liveDemoLink: 'https://swapnilsanap7.com',
   },
   {

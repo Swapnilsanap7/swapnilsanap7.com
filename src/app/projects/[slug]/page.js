@@ -13,7 +13,7 @@ const projectsData = {
     github: 'https://github.com/swapnilsanap7/Personal-Portfolio',
     image: '/project/portfolio/web.png',
     fullDescription: 'A modern, responsive portfolio website built with Next.js and TailwindCSS. Features smooth animations, dark mode support, and a clean design showcasing my development skills and projects.',
-    techStack: ['Next.js', 'TailwindCSS', 'Framer Motion'],
+    techStack: ['Next.js', 'TailwindCSS', 'GSAP'],
     imageSrc: '/project/portfolio/web.png',
     githubLink: 'https://github.com/swapnilsanap7/Personal-Portfolio',
     liveDemoLink: 'https://swapnilsanap7.com',
@@ -30,7 +30,7 @@ const projectsData = {
     techStackDetailed: [
       { name: 'Next.js', icon: '/icons/next.js.svg', description: 'React framework for production' },
       { name: 'TailwindCSS', icon: '/icons/tailwind.svg', description: 'Utility-first CSS framework' },
-      { name: 'Framer Motion', icon: '/icons/react.svg', description: 'Animation library for React' }
+      { name: 'GSAP', icon: '/icons/js.svg', description: 'GreenSock Animation Platform for smooth, high-performance interactions' }
     ],
     gallery: [
       '/project/portfolio/web.png',

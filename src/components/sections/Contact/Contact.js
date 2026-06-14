@@ -407,7 +407,7 @@ export default function Contact() {
                   </svg>
                 </a>
                 <a 
-                href="none"
+                href="https://x.com/swapnilsanap7"
                 target="_blank"
                 rel="noopener noreferrer" 
                 className="w-10 h-10 bg-blue-500/20 hover:bg-blue-500 rounded-full flex items-center justify-center transition-colors group">

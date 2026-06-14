@@ -6,6 +6,7 @@ import { Caveat } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { trackThemeToggle } from '../../lib/config/analytics';
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -40,6 +41,7 @@ export default function Navbar() {
     html.classList.toggle('dark');
     localStorage.theme = newTheme;
     setIsDark(newTheme === 'dark');
+    trackThemeToggle(newTheme);
   };
 
   const handleSmoothScroll = (e, sectionId) => {

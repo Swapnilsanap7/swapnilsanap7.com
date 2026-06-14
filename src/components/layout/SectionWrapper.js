@@ -1,4 +1,4 @@
-// src/components/SectionWrapper.js
+// src/components/layout/SectionWrapper.js
 export default function SectionWrapper({ id, children, className = "" }) {
   return (
     <section

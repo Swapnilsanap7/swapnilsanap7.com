@@ -59,7 +59,7 @@ export default function Footer() {
           
           {/* Center Text */}
           <div className="w-full text-sm text-center md:text-base order-2 md:order-1">
-            © {new Date().getFullYear()} Swapnil Sanap. All rights reserved.
+            © {new Date().getFullYear()} Swapnil Sanap. All rights reserved. Made with ❤️ by Swapnil Sanap
           </div>
 
           {/* Right: Socials */}

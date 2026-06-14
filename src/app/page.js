@@ -4,6 +4,7 @@ import Experience from '../components/sections/Experience/Experience';
 import Hero from '../components/sections/Hero/Hero';
 import Project from '../components/sections/Project/Project';
 import Skills from '../components/sections/Skills/Skills';
+import ScrollTracker from '../components/features/ScrollTracker';
 
 // Enhanced metadata for the home page
 export const metadata = {
@@ -52,6 +53,7 @@ export const metadata = {
 export default function Home() {
   return (
     <>
+      <ScrollTracker />
       {/* Semantic HTML structure for better SEO */}
       <article>
         <header>

@@ -1,52 +1,97 @@
-# Swapnil Sanap - Personal Portfolio
+# 🌌 Swapnil Sanap — Professional Portfolio
 
-This is the repository for my personal portfolio website, built to showcase my skills, projects, and professional background. The site is designed with a focus on clean aesthetics, smooth animations, and interactive elements.
+[![Live Demo](https://img.shields.io/badge/Live_Demo-swapnilsanap7.com-blueviolet?style=for-the-badge&logo=google-chrome&logoColor=white)](https://swapnilsanap7.com)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![Three.js](https://img.shields.io/badge/Three.js-black?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
+[![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white)](https://gsap.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-**Live Demo**: [https://swapnilsanap7.com](https://swapnilsanap7.com)
+Welcome to the official repository of my personal developer portfolio. This web application is a high-performance, visually engaging space designed to showcase my experience, skills, and projects as a Full Stack Software Engineer.
 
-## ✨ Features
+---
 
-*   **Modern & Responsive Design**: A clean UI that works seamlessly across desktops, tablets, and mobile devices.
-*   **Dark/Light Mode**: User-selectable theme preference that is saved locally.
-*   **Interactive 3D Graphics**: Features a 3D model viewer built with Three.js and React Three Fiber.
-*   **Smooth Animations**: Engaging user experience with animations powered by GSAP and Framer Motion.
-*   **Project Showcase**: A dedicated section to display my work, with links to GitHub repositories and live demos.
-*   **Enhanced Scrolling**: Smooth scrolling experience implemented with GSAP's `ScrollSmoother` plugin.
+## ✨ Key Features
 
-## 🛠️ Tech Stack
+*   **🎨 Premium Glassmorphism UI**: A highly polished user interface with smooth transitions, customized color palettes, and full dark/light mode integration.
+*   **🌀 Interactive 3D Visuals**: Fully immersive 3D scene elements powered by **Three.js** and **React Three Fiber (R3F)**.
+*   **🚀 GSAP & ScrollSmoother Animations**: Implemented using GSAP's scroll tracking and animation timelines, ensuring ultra-smooth scrolling, parallax effects, and micro-interactions.
+*   **📊 Advanced Performance & Event Analytics**: Integrated custom **Google Analytics (gtag)** to monitor user retention metrics including:
+    *   *Section Scroll Funnel*: Tracking when visitors view different sections of the page.
+    *   *Interaction Analytics*: Capturing external code link clicks (GitHub), live project demo clicks, and light/dark mode changes.
+*   **📱 Universal Responsive Layout**: Clean mobile-first design system that scales seamlessly from small viewports up to large displays.
 
-*   **Framework**: [Next.js](https://nextjs.org/)
-*   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-*   **Animation**: [GSAP](https://gsap.com/) for smooth, performant animations
-*   **3D Graphics**: [Three.js](https://threejs.org/) & [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
-*   **Deployment**: [Vercel](https://vercel.com/)
+---
 
-## 🚀 Getting Started
+## 🛠️ Technology Stack
 
-To get a local copy up and running, follow these simple steps.
+| Category | Technologies Used |
+| :--- | :--- |
+| **Frontend & Core** | Next.js (App Router), React, JavaScript (ES6+), HTML5 |
+| **Animations & Scrolling** | GSAP, ScrollTrigger, ScrollSmoother |
+| **3D Graphics** | Three.js, React Three Fiber (R3F), `@react-three/drei` |
+| **Styling** | Tailwind CSS, CSS Variables |
+| **Analytics & Metrics**| Google Analytics 4 (GA4 / gtag) |
+| **Deployment & Hosting**| Vercel |
 
-### Prerequisites
+---
 
-Make sure you have Node.js and npm installed on your machine.
+## 📂 Project Structure
 
-### Installation
+```text
+portfolio/
+├── public/                 # Static assets (3D models, images, manifest)
+├── src/
+│   ├── app/                # Next.js App Router (pages & global layouts)
+│   ├── components/         # React Components
+│   │   ├── features/       # Specialized features (ProjectCard, ScrollTracker)
+│   │   ├── layout/         # Core layouts (Navbar, Footer, SectionWrapper)
+│   │   ├── sections/       # Section containers (About, Experience, Projects)
+│   │   └── ui/             # Reusable UI controls (GoogleAnalytics component)
+│   ├── lib/
+│   │   └── config/         # App constants, configuration, and analytics helper utilities
+│   └── styles/             # Global CSS variables and styling sheets
+└── package.json            # Configuration and script manager
+```
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/swapnilsanap7/swapnilsanap7.com.git
-    cd swapnilsanap7.com
-    ```
-2.  Install the dependencies:
-    ```bash
-    npm install
-    ```
-3.  Run the development server:
-    ```bash
-    npm run dev
-    ```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. You can start editing the main page by modifying [`src/app/page.js`](src/app/page.js).
+## 🚀 Getting Started Locally
+
+Follow these steps to run a development instance of the portfolio on your local machine:
+
+### 1. Prerequisites
+Ensure you have **Node.js** (v18.0.0 or higher) and **npm** installed.
+
+### 2. Clone the Repository
+```bash
+git clone https://github.com/swapnilsanap7/swapnilsanap7.com.git
+cd swapnilsanap7.com
+```
+
+### 3. Install Dependencies
+```bash
+npm install
+```
+
+### 4. Set Up Environment Variables (Optional)
+Create a `.env.local` file in the root folder to configure Google Analytics:
+```env
+NEXT_PUBLIC_GA_ID=G-YOUR_MEASUREMENT_ID
+```
+
+### 5. Start the Development Server
+```bash
+npm run dev
+```
+Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the project.
+
+---
 
 ## ☁️ Deployment
 
-This project is deployed at Vercel. Check it out at [here](http://swapnilsanap7.com) or at top.
+Production deployment is automated via **Vercel** with continuous deployment integrated directly into the `main` branch. 
+
+Visit the live site here:  
+👉 **[swapnilsanap7.com](https://swapnilsanap7.com)**

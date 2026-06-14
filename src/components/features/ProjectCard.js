@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { trackGithubClick, trackProjectCardClick } from '../../lib/config/analytics';
+import { trackGithubClick, trackProjectCardClick, trackLiveDemoClick, trackProjectCodeClick } from '../../lib/config/analytics';
 
 export default function ProjectCard({
   title,
@@ -59,6 +59,7 @@ export default function ProjectCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${title} Live Demo`}
+                onClick={() => trackLiveDemoClick(title, 'card')}
                 className="flex-1 border border-white/30 hover:border-white/60 hover:bg-white/10 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-center"
               >
                 Live Demo
@@ -70,7 +71,10 @@ export default function ProjectCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${title} GitHub repository`}
-                onClick={() => trackGithubClick('project')}
+                onClick={() => {
+                  trackGithubClick('project');
+                  trackProjectCodeClick(title, 'card');
+                }}
                 className="flex-1 border border-white/30 hover:border-white/60 hover:bg-white/10 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-center"
               >
                 GitHub

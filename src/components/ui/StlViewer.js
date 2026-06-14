@@ -3,7 +3,7 @@
 import { Environment } from '@react-three/drei';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { gsap } from 'gsap';
-import { Suspense, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { STLLoader } from 'three-stdlib';
 
@@ -14,19 +14,60 @@ function Model() {
   const meshRef = useRef();
 
   const [isDragging, setIsDragging] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [lastInteraction, setLastInteraction] = useState(Date.now());
   const hasReset = useRef(false);
+  const pointerRef = useRef({ x: 0, y: 0 });
   const idleTime = 1000; // 1 second idle
 
   const originalPose = { x: 0.3, z: 0.1 };
   const rotationSpeed = useRef(0.01);
 
-  const handleStart = () => {
+  // Apply correct cursor states
+  useEffect(() => {
+    if (isDragging) {
+      document.body.style.cursor = 'grabbing';
+    } else if (isHovered) {
+      document.body.style.cursor = 'grab';
+    } else {
+      document.body.style.cursor = 'default';
+    }
+    return () => {
+      document.body.style.cursor = 'default';
+    };
+  }, [isDragging, isHovered]);
+
+  const handlePointerDown = (e) => {
+    e.stopPropagation();
+    e.target.setPointerCapture(e.pointerId);
+    const clientX = e.clientX || e.nativeEvent.clientX;
+    const clientY = e.clientY || e.nativeEvent.clientY;
+    pointerRef.current = { x: clientX, y: clientY };
     setIsDragging(true);
     hasReset.current = false;
+    if (meshRef.current) {
+      gsap.killTweensOf(meshRef.current.rotation);
+    }
+    gsap.killTweensOf(rotationSpeed);
   };
 
-  const handleEnd = () => {
+  const handlePointerMove = (e) => {
+    if (!isDragging) return;
+    e.stopPropagation();
+    const clientX = e.clientX || e.nativeEvent.clientX;
+    const clientY = e.clientY || e.nativeEvent.clientY;
+    const deltaX = clientX - pointerRef.current.x;
+    const deltaY = clientY - pointerRef.current.y;
+    if (meshRef.current) {
+      meshRef.current.rotation.y += deltaX * 0.007;
+      meshRef.current.rotation.x += deltaY * 0.007;
+    }
+    pointerRef.current = { x: clientX, y: clientY };
+  };
+
+  const handlePointerUp = (e) => {
+    e.stopPropagation();
+    e.target.releasePointerCapture(e.pointerId);
     setIsDragging(false);
     setLastInteraction(Date.now());
   };
@@ -71,6 +112,11 @@ function Model() {
       geometry={geometry}
       scale={0.012}
       rotation={[originalPose.x, 0, originalPose.z]}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerOver={() => setIsHovered(true)}
+      onPointerOut={() => setIsHovered(false)}
     >
       <meshStandardMaterial
         color="#5078f0"

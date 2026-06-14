@@ -70,7 +70,7 @@ export function generatePersonSchema() {
       "url": "https://www.uis.edu/"
     },
     "alumniOf": {
-      "@type": "EducationalOrganization", 
+      "@type": "EducationalOrganization",
       "name": "University of Illinois Springfield",
       "url": "https://www.uis.edu/"
     },
@@ -82,7 +82,7 @@ export function generatePersonSchema() {
     },
     "knowsAbout": [
       "JavaScript",
-      "TypeScript", 
+      "TypeScript",
       "React",
       "Next.js",
       "Node.js",

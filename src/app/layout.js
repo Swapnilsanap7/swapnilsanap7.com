@@ -1,11 +1,10 @@
-import { Caveat } from 'next/font/google';
-import Script from 'next/script';
+import { GoogleAnalytics } from '../components/ui';
 import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 import SmoothScrollWrapper from '../components/layout/SmoothScrollWrapper';
 import './globals.css';
+import { generatePersonSchema } from '../lib/utils/seo';
 
-const caveat = Caveat({ subsets: ['cyrillic'], weight: '700' });
 
 export const metadata = {
   title: {
@@ -94,71 +93,14 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Swapnil Sanap",
-    "url": "https://swapnilsanap7.com",
-    "image": "https://swapnilsanap7.com/swapnil.png",
-    "sameAs": [
-      "https://github.com/Swapnilsanap7",
-      "https://www.linkedin.com/in/swapnilsanap7/",
-      "mailto:hello@swapnilsanap7.com"
-    ],
-    "jobTitle": "Full Stack Developer",
-    "worksFor": {
-      "@type": "EducationalOrganization",
-      "name": "University of Illinois Springfield",
-      "url": "https://www.uis.edu/"
-    },
-    "alumniOf": {
-      "@type": "EducationalOrganization",
-      "name": "University of Illinois Springfield",
-      "url": "https://www.uis.edu/"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Pune",
-      "addressRegion": "Maharashtra",
-      "addressCountry": "India"
-    },
-    "knowsAbout": [
-      "JavaScript",
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Node.js",
-      "PostgreSQL",
-      "MongoDB",
-      "Python",
-      "Full Stack Development",
-      "Software Engineering",
-      "Web Development",
-      "React Native",
-      "TailwindCSS",
-      "GSAP"
-    ]
-  };
+  const structuredData = generatePersonSchema();
+
 
   return (
     <html lang="en">
       <head>
-        {/* Google Analytics */}
-        <Script 
-          src="https://www.googletagmanager.com/gtag/js?id=G-LDPKRE8CFP"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-LDPKRE8CFP', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
-        
+        <GoogleAnalytics />
+
         {/* Structured Data */}
         <script
           type="application/ld+json"

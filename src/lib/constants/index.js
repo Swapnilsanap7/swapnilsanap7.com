@@ -154,6 +154,9 @@ export const FORM_CONFIG = {
   },
 };
 
+import { PROJECTS_DATA, PROJECTS_LIST } from './projects';
+import { EXPERIENCE_DATA } from './experience';
+
 const constants = {
   SITE_CONFIG,
   ANIMATION_CONFIG,
@@ -162,6 +165,10 @@ const constants = {
   TECH_STACK,
   PROJECT_CATEGORIES,
   FORM_CONFIG,
+  PROJECTS_DATA,
+  PROJECTS_LIST,
+  EXPERIENCE_DATA,
 };
 
+export { PROJECTS_DATA, PROJECTS_LIST, EXPERIENCE_DATA };
 export default constants;

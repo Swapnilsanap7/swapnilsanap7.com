@@ -89,7 +89,7 @@ export default function Skills() {
       });
 
       // Animate skill bars after cards are visible
-      setTimeout(() => {
+      gsap.delayedCall(0.5, () => {
         skillCardsRef.current.forEach((card, index) => {
           if (card) {
             const progressBar = card.querySelector('.skill-progress-bar');
@@ -101,13 +101,13 @@ export default function Skills() {
                   width: `${level}%`,
                   duration: 1.5,
                   delay: 0.3 + (index * 0.1),
-                  ease: "easeOut"
+                  ease: "power2.out"
                 }
               );
             }
           }
         });
-      }, 500);
+      });
     }, sectionRef);
 
     return () => ctx.revert();

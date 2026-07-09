@@ -14,9 +14,19 @@ import SectionWrapper from '../../layout/SectionWrapper';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const FIELD_LIMITS = {
+  name: 80,
+  email: 254,
+  subject: 120,
+  message: 3000,
+};
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
 export default function Contact() {
   const formRef = useRef(null);
   const infoRef = useRef(null);
+  const turnstileRef = useRef(null);
+  const turnstileWidgetId = useRef(null);
   const hasTrackedSectionView = useRef(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -28,8 +38,49 @@ export default function Contact() {
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
   const [errors, setErrors] = useState({});
   const [honeypot, setHoneypot] = useState(''); // Spam protection
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   useEffect(() => {
+    const renderTurnstile = () => {
+      if (!TURNSTILE_SITE_KEY || !turnstileRef.current || !window.turnstile || turnstileWidgetId.current) {
+        return;
+      }
+
+      turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (token) => {
+          setTurnstileToken(token);
+          setErrors((currentErrors) => ({ ...currentErrors, form: '' }));
+        },
+        'expired-callback': () => setTurnstileToken(''),
+        'error-callback': () => {
+          setTurnstileToken('');
+          setErrors((currentErrors) => ({
+            ...currentErrors,
+            form: 'Verification failed. Please refresh and try again.',
+          }));
+        },
+      });
+    };
+
+    if (TURNSTILE_SITE_KEY) {
+      if (window.turnstile) {
+        renderTurnstile();
+      } else {
+        const existingScript = document.querySelector('script[src="https://challenges.cloudflare.com/turnstile/v0/api.js"]');
+        const script = existingScript || document.createElement('script');
+
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+        script.async = true;
+        script.defer = true;
+        script.onload = renderTurnstile;
+
+        if (!existingScript) {
+          document.head.appendChild(script);
+        }
+      }
+    }
+
     const ctx = gsap.context(() => {
       gsap.from(formRef.current, {
         scrollTrigger: {
@@ -69,8 +120,23 @@ export default function Contact() {
       });
     });
 
-    return () => ctx.revert();
+    return () => {
+      if (window.turnstile && turnstileWidgetId.current) {
+        window.turnstile.remove(turnstileWidgetId.current);
+        turnstileWidgetId.current = null;
+      }
+
+      ctx.revert();
+    };
   }, []);
+
+  const resetTurnstile = () => {
+    setTurnstileToken('');
+
+    if (window.turnstile && turnstileWidgetId.current) {
+      window.turnstile.reset(turnstileWidgetId.current);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -92,22 +158,30 @@ export default function Contact() {
     
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
+    } else if (formData.name.trim().length > FIELD_LIMITS.name) {
+      newErrors.name = `Name must be ${FIELD_LIMITS.name} characters or less`;
     }
     
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
+    } else if (formData.email.trim().length > FIELD_LIMITS.email) {
+      newErrors.email = `Email must be ${FIELD_LIMITS.email} characters or less`;
     }
     
     if (!formData.subject.trim()) {
       newErrors.subject = 'Subject is required';
+    } else if (formData.subject.trim().length > FIELD_LIMITS.subject) {
+      newErrors.subject = `Subject must be ${FIELD_LIMITS.subject} characters or less`;
     }
     
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required';
     } else if (formData.message.trim().length < 10) {
       newErrors.message = 'Message must be at least 10 characters long';
+    } else if (formData.message.trim().length > FIELD_LIMITS.message) {
+      newErrors.message = `Message must be ${FIELD_LIMITS.message} characters or less`;
     }
     
     setErrors(newErrors);
@@ -117,14 +191,25 @@ export default function Contact() {
   const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Spam protection (unchanged)
+  // Spam protection
   if (honeypot) {
     console.log('Spam detected');
     return;
   }
 
-  // Validation (unchanged)
   if (!validateForm()) {
+    return;
+  }
+
+  if (!TURNSTILE_SITE_KEY && process.env.NODE_ENV === 'production') {
+    setErrors({ form: 'Message verification is not configured.' });
+    setSubmitStatus('error');
+    return;
+  }
+
+  if (TURNSTILE_SITE_KEY && !turnstileToken) {
+    setErrors({ form: 'Please complete the verification before sending.' });
+    setSubmitStatus('error');
     return;
   }
 
@@ -132,7 +217,6 @@ export default function Contact() {
   setSubmitStatus(null);
 
   try {
-    // SEND DATA TO YOUR OWN API (THIS IS THE BIG CHANGE)
     const response = await fetch('/api/contact', {
       method: 'POST',
       headers: {
@@ -144,10 +228,10 @@ export default function Contact() {
         subject: formData.subject,
         message: formData.message,
         honeypot, // pass honeypot to backend
+        turnstileToken,
       }),
     });
 
-    // HANDLE RESPONSE (same logic as before)
     if (response.ok) {
       setSubmitStatus('success');
 
@@ -161,12 +245,22 @@ export default function Contact() {
       });
 
       setErrors({});
+      resetTurnstile();
+    } else if (response.status === 429) {
+      setErrors({ form: 'Too many messages sent. Please try again later.' });
+      setSubmitStatus('error');
+      resetTurnstile();
+    } else if (response.status === 403) {
+      setErrors({ form: 'Verification failed. Please refresh and try again.' });
+      setSubmitStatus('error');
+      resetTurnstile();
     } else {
       throw new Error('Failed to send message');
     }
   } catch (error) {
     console.error('Form submission error:', error);
     setSubmitStatus('error');
+    resetTurnstile();
   } finally {
     setIsSubmitting(false);
   }
@@ -215,7 +309,7 @@ export default function Contact() {
                 </svg>
                 <p className="text-red-400 font-medium">Failed to send message</p>
               </div>
-              <p className="text-red-300 text-sm mt-1">Please try again or contact me directly at hello@swapnilsanap7.com</p>
+              <p className="text-red-300 text-sm mt-1">{errors.form || 'Please try again or contact me directly at hello@swapnilsanap7.com'}</p>
             </div>
           )}
 
@@ -241,6 +335,7 @@ export default function Contact() {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
+                  maxLength={FIELD_LIMITS.name}
                   required
                   className={`w-full px-4 py-3 bg-white/5 border rounded-lg focus:outline-none focus:ring-2 transition-colors text-[var(--dark)] dark:text-white backdrop-blur-sm ${
                     errors.name 
@@ -261,6 +356,7 @@ export default function Contact() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
+                  maxLength={FIELD_LIMITS.email}
                   required
                   className={`w-full px-4 py-3 bg-white/5 border rounded-lg focus:outline-none focus:ring-2 transition-colors text-[var(--dark)] dark:text-white backdrop-blur-sm ${
                     errors.email 
@@ -283,6 +379,7 @@ export default function Contact() {
                 name="subject"
                 value={formData.subject}
                 onChange={handleInputChange}
+                maxLength={FIELD_LIMITS.subject}
                 required
                 className={`w-full px-4 py-3 bg-white/5 border rounded-lg focus:outline-none focus:ring-2 transition-colors text-[var(--dark)] dark:text-white backdrop-blur-sm ${
                   errors.subject 
@@ -297,13 +394,14 @@ export default function Contact() {
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-[var(--dark)] dark:text-[var(--light)] mb-2">
                 Message <span className="text-red-500">*</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">({formData.message.length} characters)</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">({formData.message.length}/{FIELD_LIMITS.message} characters)</span>
               </label>
               <textarea
                 id="message"
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
+                maxLength={FIELD_LIMITS.message}
                 required
                 rows="6"
                 className={`w-full px-4 py-3 bg-white/5 border rounded-lg focus:outline-none focus:ring-2 transition-colors text-[var(--dark)] dark:text-white backdrop-blur-sm resize-none ${
@@ -315,6 +413,10 @@ export default function Contact() {
               ></textarea>
               {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
             </div>
+
+            {TURNSTILE_SITE_KEY && (
+              <div ref={turnstileRef} className="min-h-[65px]" />
+            )}
             
             <button
               type="submit"

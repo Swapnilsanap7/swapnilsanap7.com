@@ -15,21 +15,27 @@ export default function ResumeButton() {
     const container = containerRef.current;
     if (!container) return;
 
+    const ctx = gsap.context(() => {});
+
     const handleMouseEnter = () => {
       setHovered(true);
-      gsap.to(container, {
-        width: 320,
-        duration: 0.3,
-        ease: "power2.out"
+      ctx.add(() => {
+        gsap.to(container, {
+          width: 320,
+          duration: 0.3,
+          ease: "power2.out"
+        });
       });
     };
 
     const handleMouseLeave = () => {
       setHovered(false);
-      gsap.to(container, {
-        width: 180,
-        duration: 0.3,
-        ease: "power2.out"
+      ctx.add(() => {
+        gsap.to(container, {
+          width: 180,
+          duration: 0.3,
+          ease: "power2.out"
+        });
       });
     };
 
@@ -39,11 +45,14 @@ export default function ResumeButton() {
     return () => {
       container.removeEventListener('mouseenter', handleMouseEnter);
       container.removeEventListener('mouseleave', handleMouseLeave);
+      ctx.revert();
     };
   }, []);
 
   useEffect(() => {
-    if (previewRef.current) {
+    if (!previewRef.current) return;
+
+    const ctx = gsap.context(() => {
       if (hovered) {
         gsap.fromTo(previewRef.current, 
           { opacity: 0, height: 0 },
@@ -57,7 +66,9 @@ export default function ResumeButton() {
           ease: "power2.out"
         });
       }
-    }
+    });
+
+    return () => ctx.revert();
   }, [hovered]);
 
   return (

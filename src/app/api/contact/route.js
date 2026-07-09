@@ -1,28 +1,186 @@
 import nodemailer from 'nodemailer';
 
+export const runtime = 'nodejs';
+
+const MAX_BODY_BYTES = 10 * 1024;
+const MAX_FIELD_LENGTHS = {
+  name: 80,
+  email: 254,
+  subject: 120,
+  message: 3000,
+};
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+const rateLimitStore = new Map();
+
+function getClientIp(req) {
+  const forwardedFor = req.headers.get('x-forwarded-for');
+  if (forwardedFor) {
+    return forwardedFor.split(',')[0].trim();
+  }
+
+  return req.headers.get('x-real-ip') || 'unknown';
+}
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const bucket = rateLimitStore.get(ip) || [];
+  const recentRequests = bucket.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS);
+
+  if (recentRequests.length >= RATE_LIMIT_MAX_REQUESTS) {
+    rateLimitStore.set(ip, recentRequests);
+    return true;
+  }
+
+  recentRequests.push(now);
+  rateLimitStore.set(ip, recentRequests);
+  return false;
+}
+
+function sanitizeHeader(value) {
+  return value.replace(/[\r\n]+/g, ' ').trim();
+}
+
+function normalizeField(value, maxLength) {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value.trim().slice(0, maxLength);
+}
+
+function escapeHtml(value) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function isAllowedOrigin(req) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const origin = req.headers.get('origin');
+
+  if (!siteUrl || !origin) {
+    return process.env.NODE_ENV !== 'production';
+  }
+
+  try {
+    return new URL(origin).origin === new URL(siteUrl).origin;
+  } catch {
+    return false;
+  }
+}
+
+async function parseRequestBody(req) {
+  const rawBody = await req.text();
+
+  if (Buffer.byteLength(rawBody, 'utf8') > MAX_BODY_BYTES) {
+    return { error: 'Request too large', status: 413 };
+  }
+
+  try {
+    return { body: JSON.parse(rawBody) };
+  } catch {
+    return { error: 'Invalid JSON', status: 400 };
+  }
+}
+
+async function verifyTurnstileToken(token, ip) {
+  if (!process.env.TURNSTILE_SECRET_KEY) {
+    return process.env.NODE_ENV !== 'production';
+  }
+
+  if (!token || typeof token !== 'string') {
+    return false;
+  }
+
+  const formData = new FormData();
+  formData.append('secret', process.env.TURNSTILE_SECRET_KEY);
+  formData.append('response', token);
+  if (ip !== 'unknown') {
+    formData.append('remoteip', ip);
+  }
+
+  const response = await fetch(TURNSTILE_VERIFY_URL, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    return false;
+  }
+
+  const result = await response.json();
+  return result.success === true;
+}
+
 export async function POST(req) {
   try {
-    const body = await req.json();
-    const { name, email, subject, message, honeypot } = body;
+    if (!isAllowedOrigin(req)) {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const ip = getClientIp(req);
+
+    if (isRateLimited(ip)) {
+      return Response.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
+    const parsed = await parseRequestBody(req);
+    if (parsed.error) {
+      return Response.json({ error: parsed.error }, { status: parsed.status });
+    }
+
+    const { honeypot } = parsed.body;
+    const turnstileToken = parsed.body.turnstileToken;
+    const name = sanitizeHeader(normalizeField(parsed.body.name, MAX_FIELD_LENGTHS.name));
+    const email = sanitizeHeader(normalizeField(parsed.body.email, MAX_FIELD_LENGTHS.email));
+    const subject = sanitizeHeader(normalizeField(parsed.body.subject, MAX_FIELD_LENGTHS.subject));
+    const message = normalizeField(parsed.body.message, MAX_FIELD_LENGTHS.message);
 
     // Honeypot
     if (honeypot) {
       return Response.json({ success: true });
     }
 
-    if (!name || !email || !subject || !message) {
+    const isHuman = await verifyTurnstileToken(turnstileToken, ip);
+    if (!isHuman) {
+      return Response.json({ error: 'Verification failed' }, { status: 403 });
+    }
+
+    if (!name || !email || !subject || !message || !isValidEmail(email)) {
       return Response.json({ error: 'Missing fields' }, { status: 400 });
+    }
+
+    if (!process.env.APPLE_SMTP_USER || !process.env.APPLE_SMTP_PASS || !process.env.MAIL_FROM || !process.env.NEXT_PUBLIC_SITE_URL) {
+      console.error('Mail configuration is incomplete');
+      return Response.json({ error: 'Email failed' }, { status: 500 });
     }
 
     const transporter = nodemailer.createTransport({
       host: 'smtp.mail.me.com',
       port: 587,
       secure: false,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
       auth: {
         user: process.env.APPLE_SMTP_USER, // Apple ID login email
         pass: process.env.APPLE_SMTP_PASS, // App-specific password
       },
     });
+
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeSubject = escapeHtml(subject);
+    const safeMessage = escapeHtml(message);
 
     // HTML Email Template
     const htmlTemplate = `
@@ -83,9 +241,9 @@ export async function POST(req) {
                   <!-- Content -->
                   <tr>
                     <td class="content" style="padding:24px; font-size:14px; color:#111827;">
-                      <p><strong>Name:</strong> ${name}</p>
-                      <p><strong>Email:</strong> ${email}</p>
-                      <p><strong>Subject:</strong> ${subject}</p>
+                      <p><strong>Name:</strong> ${safeName}</p>
+                      <p><strong>Email:</strong> ${safeEmail}</p>
+                      <p><strong>Subject:</strong> ${safeSubject}</p>
 
                       <hr style="border:none; border-top:1px solid #d1d5db; margin:24px 0;" />
 
@@ -99,7 +257,7 @@ export async function POST(req) {
                         white-space:pre-line;
                         color:#374151;
                       ">
-                        ${message}
+                        ${safeMessage}
                       </div>
                     </td>
                   </tr>

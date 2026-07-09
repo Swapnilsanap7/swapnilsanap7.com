@@ -1,44 +1,6 @@
 import ProjectCard from '../../features/ProjectCard';
 import SectionWrapper from '../../layout/SectionWrapper';
-
-const projects = [
-  {
-    slug: 'portfolio-website',
-    title: 'Portfolio Website',
-    description: 'My personal website showcasing projects and skills.',
-    techStack: ['Next.js', 'TailwindCSS', 'GSAP'],
-    imageSrc: '/project/portfolio/1.jpg',
-    githubLink: 'https://github.com/swapnilsanap7/swapnilsanap7.com',
-    liveDemoLink: 'https://swapnilsanap7.com',
-  },
-  {
-    slug: 'ecommerce-showcase',
-    title: 'Ecommerce Showcase',
-    description: 'A modern ecommerce UI built using HTML, CSS, and JavaScript, featuring smooth animations and a clean product display layout.',
-    techStack: ['React', 'Firebase', 'TailwindCSS'],
-    imageSrc: '/project/E-Commerce/mini.jpg',
-    githubLink: 'https://github.com/Swapnilsanap7/Ecommerce-Showcase',
-    liveDemoLink: 'https://swapnilsanap7.github.io/Ecommerce-Showcase/',
-  },
-  {
-    slug: 'progate-to-modern-web',
-    title: 'progate-to-modern-web',
-    description: 'It is not Classified.',
-    techStack: ['HTML', 'CSS', 'JavaScript'],
-    imageSrc: '/project/webio/web-mini.png',
-    githubLink: 'https://github.com/Swapnilsanap7/web.io',
-    liveDemoLink: 'https://swapnilsanap7.github.io/web.io',
-  },
-  {
-    slug: 'splitxpense',
-    title: 'SplitXpense',
-    description: 'A split expense tracker for groups.',
-    techStack: ['Next.js', 'TailwindCSS', 'Firebase'],
-    imageSrc: '/project/splitxpense/web-mini.png',
-    githubLink: 'https://github.com/Swapnilsanap7/splitexpense-web',
-    liveDemoLink: 'https://splitexpense-web.vercel.app',
-  },
-];
+import { PROJECTS_LIST } from '../../../lib/constants';
 
 export default function Project() {
   return (
@@ -51,7 +13,7 @@ export default function Project() {
       </h2>
 
       <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full">
-        {projects.map((proj) => (
+        {PROJECTS_LIST.map((proj) => (
           <ProjectCard key={proj.title} {...proj} />
         ))}
       </div>

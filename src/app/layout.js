@@ -3,7 +3,7 @@ import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 import SmoothScrollWrapper from '../components/layout/SmoothScrollWrapper';
 import './globals.css';
-import { generatePersonSchema } from '../lib/utils/seo';
+import { generatePersonSchema, generateWebSiteSchema } from '../lib/utils/seo';
 
 
 export const metadata = {
@@ -93,7 +93,8 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const structuredData = generatePersonSchema();
+  const personSchema = generatePersonSchema();
+  const websiteSchema = generateWebSiteSchema();
 
 
   return (
@@ -105,7 +106,7 @@ export default function RootLayout({ children }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData)
+            __html: JSON.stringify([personSchema, websiteSchema])
           }}
         />
         <link rel="icon" href="/assets/favicons/main-logo.svg" type="image/svg+xml" />

@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { trackGithubClick, trackProjectView, trackLiveDemoClick, trackProjectCodeClick } from '../../lib/config/analytics';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,6 +13,11 @@ gsap.registerPlugin(ScrollTrigger);
 export default function ProjectDetail({ project }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // Animation refs
   const backButtonRef = useRef(null);
@@ -449,7 +455,7 @@ export default function ProjectDetail({ project }) {
                 key={tech.name}
                 className="tech-item flex items-center gap-3 bg-[var(--dark)]/10 dark:bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-[var(--dark)]/20 dark:border-white/20 hover:bg-[var(--dark)]/20 dark:hover:bg-white/20 transition-all duration-300"
               >
-                {tech.icon && (
+                {tech.icon && !tech.iconDark && (
                   <Image
                     src={tech.icon}
                     alt={tech.name}
@@ -457,6 +463,24 @@ export default function ProjectDetail({ project }) {
                     height={24}
                     className="object-contain"
                   />
+                )}
+                {tech.icon && tech.iconDark && (
+                  <>
+                    <Image
+                      src={tech.icon}
+                      alt={tech.name}
+                      width={24}
+                      height={24}
+                      className="object-contain dark:hidden"
+                    />
+                    <Image
+                      src={tech.iconDark}
+                      alt={tech.name}
+                      width={24}
+                      height={24}
+                      className="object-contain hidden dark:block"
+                    />
+                  </>
                 )}
                 <span className="font-medium text-[var(--dark)] dark:text-white">{tech.name}</span>
               </div>
@@ -557,9 +581,9 @@ export default function ProjectDetail({ project }) {
       </section>
 
       {/* Image Modal */}
-      {isModalOpen && selectedImage !== null && project.gallery && (
+      {mounted && isModalOpen && selectedImage !== null && project.gallery && createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
           onClick={closeModal}
           style={{ opacity: 1 }}
         >
@@ -605,16 +629,13 @@ export default function ProjectDetail({ project }) {
             )}
 
             {/* Image Container */}
-            <div className="relative flex items-center justify-center w-full h-full">
-              <div className="relative max-w-[90vw] max-h-[85vh] bg-[var(--light)]/5 dark:bg-white/5 rounded-2xl overflow-hidden shadow-2xl border border-[var(--dark)]/10 dark:border-white/10">
-                <Image
+            <div className="relative flex items-center justify-center w-full h-full p-4">
+              <div className="relative w-full max-w-5xl max-h-full rounded-2xl overflow-y-auto overflow-x-hidden shadow-2xl border border-[var(--dark)]/10 dark:border-white/10 bg-[var(--light)]/5 dark:bg-white/5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={project.gallery[selectedImage]}
                   alt={`${project.title} screenshot ${selectedImage + 1}`}
-                  width={1200}
-                  height={800}
-                  className="object-contain w-auto h-auto max-w-full max-h-[85vh]"
-                  priority
-                  quality={95}
+                  className="w-full h-auto object-top"
                 />
               </div>
             </div>
@@ -628,7 +649,8 @@ export default function ProjectDetail({ project }) {
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

@@ -11,14 +11,14 @@ export const PROJECTS_DATA = {
     description: 'My personal website showcasing projects and skills.',
     fullDescription: 'A modern, responsive portfolio website built with Next.js and TailwindCSS. Features smooth animations, dark mode support, and a clean design showcasing my development skills and projects.',
     displayType: 'browser',
-    imageSrc: '/project/portfolio/1.jpg', // Thumbnail for home grid
-    detailImage: '/project/portfolio/web.png', // Main image for details page
+    imageSrc: '/project/portfolio/thumbnail.jpg', // Thumbnail for home grid
+    detailImage: '/project/portfolio/hero.png', // Main image for details page
     githubLink: 'https://github.com/swapnilsanap7/Personal-Portfolio',
     liveDemoLink: 'https://swapnilsanap7.com',
     techStack: ['Next.js', 'TailwindCSS', 'GSAP'],
     hero: {
       tagline: 'A modern portfolio showcasing my development journey',
-      mainImage: '/project/portfolio/web.png'
+      mainImage: '/project/portfolio/hero.png'
     },
     features: [
       { icon: '⚡', title: 'Fast Performance', description: 'Optimized loading and smooth animations' },
@@ -32,13 +32,51 @@ export const PROJECTS_DATA = {
       { name: 'GSAP', icon: '/icons/js.svg', description: 'GreenSock Animation Platform for smooth, high-performance interactions' }
     ],
     gallery: [
-      '/project/portfolio/web.png',
-      '/project/portfolio/web2.png',
-      '/project/portfolio/web3.png'
+      '/project/portfolio/hero.png', // 970 x 1920
+      '/project/portfolio/gallery-2.png', // 970 x 1920
+      '/project/portfolio/gallery-3.png'  // 970 x 1920
     ],
     caseStudy: {
       challenge: 'Creating a portfolio that stands out while maintaining clean, professional design and optimal performance.',
       solution: 'Implemented modern design patterns with smooth animations, responsive layout, and performance optimizations using Next.js best practices.'
+    }
+  },
+  'safe-spend': {
+    slug: 'safe-spend',
+    title: 'Safe Spend',
+    subtitle: 'A secure personal finance OS and intelligent budgeting coach',
+    description: 'Personal finance operating system with an intelligent AI budgeting coach.',
+    fullDescription: 'Safe Spend is a premium, secure personal finance operating system and intelligent budgeting coach. Designed as a private, high-fidelity financial dashboard, it helps users visualize cash flow, automate receipt scanning, track savings goals, checklist monthly bills, and chat with a contextual AI advisor.',
+    displayType: 'browser',
+    imageSrc: '/project/safe-spend/thumbnail.png',
+    detailImage: '/project/safe-spend/hero.png',
+    githubLink: 'https://github.com/Swapnilsanap7/safe-spend',
+    liveDemoLink: 'https://safe-spend-three.vercel.app/',
+    techStack: ['Next.js', 'TailwindCSS', 'Firebase', 'Gemini AI'],
+    hero: {
+      tagline: 'Intelligent Financial Dashboard & Coach',
+      mainImage: '/project/safe-spend/hero.png'
+    },
+    features: [
+      { icon: '🤖', title: 'Contextual AI Coach', description: 'Chat with a Gemini-powered advisor using real-time ledger context.' },
+      { icon: '🧾', title: 'Smart Receipt OCR', description: 'Convert physical receipts to structured transactions seamlessly.' },
+      { icon: '⚡', title: 'High Performance', description: 'Parallelized queries and local session validation for speed.' },
+      { icon: '🔒', title: 'Server-Side Security', description: 'Strict server-only data processing and robust Firebase rules.' }
+    ],
+    techStackDetailed: [
+      { name: 'Next.js', icon: '/icons/next.js.svg', description: 'App Router with Server Actions for fast server-side rendering.' },
+      { name: 'TailwindCSS', icon: '/icons/tailwind.svg', description: 'Utility-first styling with dynamic theme support.' },
+      { name: 'Firebase', icon: '/icons/firebase-light-m.svg', iconDark: '/icons/firebase-dark-m.svg', description: 'Firestore database with strict security rules.' },
+      { name: 'Gemini AI', icon: '/icons/google-gemini.svg', description: 'Google Gemini 2.5 Flash for OCR and intelligent context.' }
+    ],
+    gallery: [
+      '/project/safe-spend/hero.png', // 970 x 1920
+      '/project/safe-spend/gallery-2.png', // 970 x 1920
+      '/project/safe-spend/gallery-3.png' // 970 x 1920
+    ],
+    caseStudy: {
+      challenge: 'Creating a secure, high-performance personal finance app that keeps page loads instantaneous while integrating AI tools safely.',
+      solution: 'Implemented local session validation and parallelized database reads to optimize speed, alongside strict server-only operations for Gemini AI and Firebase.'
     }
   },
   'ecommerce-showcase': {
@@ -48,14 +86,14 @@ export const PROJECTS_DATA = {
     description: 'A modern ecommerce UI built using HTML, CSS, and JavaScript, featuring smooth animations and a clean product display layout.',
     fullDescription: 'A sleek and fully responsive ecommerce showcase website built with HTML, CSS, and JavaScript. Features modern UI components, product sections, scroll animations, and a clean layout designed for showcasing widgets and products elegantly.',
     displayType: 'browser',
-    imageSrc: '/project/E-Commerce/mini.jpg',
-    detailImage: '/project/E-Commerce/main.jpg',
+    imageSrc: '/project/E-Commerce/thumbnail.jpg',
+    detailImage: '/project/E-Commerce/hero.jpg',
     githubLink: 'https://github.com/Swapnilsanap7/Ecommerce-Showcase',
     liveDemoLink: 'https://swapnilsanap7.github.io/Ecommerce-Showcase/',
     techStack: ['React', 'Firebase', 'TailwindCSS'],
     hero: {
       tagline: 'A beautifully designed UI for showcasing ecommerce products',
-      mainImage: '/project/E-Commerce/main.jpg'
+      mainImage: '/project/E-Commerce/hero.jpg'
     },
     features: [
       { icon: '🛒', title: 'Product Showcase', description: 'Clean and modern product section layout' },
@@ -69,30 +107,30 @@ export const PROJECTS_DATA = {
       { name: 'JavaScript', icon: '/icons/js.svg', description: 'Interactive components and animations' }
     ],
     gallery: [
-      '/project/E-Commerce/main.jpg',  
-      '/project/E-Commerce/web2.png',
-      '/project/E-Commerce/web3.png'
+      '/project/E-Commerce/hero.jpg',
+      '/project/E-Commerce/gallery-2.png',
+      '/project/E-Commerce/gallery-3.png'
     ],
     caseStudy: {
       challenge: 'Designing a clean and modern ecommerce UI that provides smooth navigation and visually appealing product presentation.',
       solution: 'Created a fully responsive layout with smooth animations, intuitive sections, and optimized styling for a premium ecommerce feel.'
     }
   },
-  'splitxpense': { 
+  'splitxpense': {
     slug: 'splitxpense',
     title: 'SplitExpense – Bill Splitting Web App',
     subtitle: 'A seamless way to split bills, track expenses, and settle balances',
     description: 'A split expense tracker for groups.',
     fullDescription: 'SplitExpense is a modern bill-splitting platform built to make sharing expenses effortless. It enables users to create groups, add expenses, split costs evenly or unevenly, track balances, and settle up in real time. Designed with a clean UI, secure backend, and optimized workflows to ensure transparency and convenience for group finances.',
     displayType: 'browser',
-    imageSrc: '/project/splitxpense/web-mini.png',
-    detailImage: '/project/splitxpense/web.png',
+    imageSrc: '/project/splitxpense/thumbnail.png',
+    detailImage: '/project/splitxpense/hero.png',
     githubLink: 'https://github.com/Swapnilsanap7/splitexpense-web',
     liveDemoLink: 'https://splitexpense-web.vercel.app',
     techStack: ['Next.js', 'TailwindCSS', 'Firebase'],
     hero: {
       tagline: 'Easily split bills, track expenses, and settle balances effortlessly.',
-      mainImage: '/project/splitxpense/web.png'
+      mainImage: '/project/splitxpense/hero.png'
     },
     features: [
       { icon: '👥', title: 'Group Management', description: 'Create groups and manage shared expenses efficiently.' },
@@ -108,9 +146,9 @@ export const PROJECTS_DATA = {
       { name: 'TailwindCSS', icon: '/icons/tailwind.svg', description: 'Utility-first framework enabling fast, consistent styling.' }
     ],
     gallery: [
-      '/project/splitxpense/web.png',
-      '/project/splitxpense/web1.png',
-      '/project/splitxpense/web2.png'
+      '/project/splitxpense/hero.png',
+      '/project/splitxpense/gallery-2.png',
+      '/project/splitxpense/gallery-3.png'
     ],
     caseStudy: {
       challenge: 'Managing shared expenses in groups often becomes messy with manual tracking, leading to confusion and errors.',
@@ -124,14 +162,14 @@ export const PROJECTS_DATA = {
     description: 'It is not Classified.',
     fullDescription: 'This project revisits an original site I built during college with Progate, and rebuilds it using semantic HTML5, responsive CSS (Flexbox & Grid), performance-optimised assets and minimal JavaScript. It showcases how my skills have grown from learning to building with best practices in mind.',
     displayType: 'browser',
-    imageSrc: '/project/webio/web-mini.png',
-    detailImage: '/project/webio/web.png',
+    imageSrc: '/project/webio/thumbnail.png',
+    detailImage: '/project/webio/hero.png',
     githubLink: 'https://github.com/Swapnilsanap7/web.io',
     liveDemoLink: 'https://swapnilsanap7.github.io/web.io',
     techStack: ['HTML', 'CSS', 'JavaScript'],
     hero: {
       tagline: 'Then vs Now — my web dev evolution',
-      mainImage: '/project/webio/web.png'
+      mainImage: '/project/webio/hero.png'
     },
     features: [
       { icon: '🧭', title: 'Semantic HTML5', description: 'Well-structured, accessible markup throughout.' },
@@ -145,8 +183,8 @@ export const PROJECTS_DATA = {
       { name: 'JavaScript', icon: '/icons/js.svg', description: 'Vanilla JS for interactive enhancements—kept light for performance.' }
     ],
     gallery: [
-      '/project/webio/web.png',
-      '/project/webio/web1.png'
+      '/project/webio/hero.png',
+      '/project/webio/gallery-2.png'
     ],
     caseStudy: {
       challenge: 'Modernise an original college-era website while preserving its content and essence, and ensure it was performant, accessible and responsive.',

@@ -7,3 +7,15 @@
   --dark: #0D1B2A;
   --accent: #0066FF;
 }
+
+/* Prevent image dragging, copying, and right-clicking globally */
+img, svg {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}

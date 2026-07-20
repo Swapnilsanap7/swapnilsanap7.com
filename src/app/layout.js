@@ -1,4 +1,4 @@
-import { GoogleAnalytics } from '../components/ui';
+import { GoogleTagManager } from '@next/third-parties/google';
 import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 import SmoothScrollWrapper from '../components/layout/SmoothScrollWrapper';
@@ -100,7 +100,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <GoogleAnalytics />
+        <GoogleTagManager gtmId="GTM-5S63WMNJ" />
 
         {/* Structured Data */}
         <script

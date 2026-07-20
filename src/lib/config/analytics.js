@@ -1,21 +1,22 @@
 /**
- * Google Analytics configuration
- * Replace 'GA_MEASUREMENT_ID' with your actual Google Analytics ID
+ * Google Tag Manager configuration
+ * Replace 'GTM_ID' with your actual Google Tag Manager ID
  */
 
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-LDPKRE8CFP';
+import { sendGTMEvent } from '@next/third-parties/google';
+
+export const GTM_ID = 'GTM-5S63WMNJ';
 
 // Log page views
 export const pageview = (url) => {
   if (typeof window !== 'undefined') {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[GA Pageview] ${url}`);
+      console.log(`[GTM Pageview] ${url}`);
     }
-    if (window.gtag) {
-      window.gtag('config', GA_MEASUREMENT_ID, {
-        page_path: url,
-      });
-    }
+    sendGTMEvent({
+      event: 'page_view',
+      page_path: url,
+    });
   }
 };
 
@@ -23,16 +24,15 @@ export const pageview = (url) => {
 export const event = ({ action, category, label, value, params = {} }) => {
   if (typeof window !== 'undefined') {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[GA Event] action: ${action}, category: ${category}, label: ${label}, value: ${value}`, params);
+      console.log(`[GTM Event] action: ${action}, category: ${category}, label: ${label}, value: ${value}`, params);
     }
-    if (window.gtag) {
-      window.gtag('event', action, {
-        event_category: category,
-        event_label: label,
-        value: value,
-        ...params,
-      });
-    }
+    sendGTMEvent({
+      event: action,
+      event_category: category,
+      event_label: label,
+      value: value,
+      ...params,
+    });
   }
 };
 

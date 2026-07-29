@@ -72,8 +72,8 @@ export default function ResumeButton() {
   }, [hovered]);
 
   return (
-    <Link
-      href="/resume"
+    <a
+      href="/assets/documents/Swapnil_Sanap_Resume.pdf"
       target="_blank"
       rel="noopener noreferrer"
       className="w-full max-w-xs"
@@ -103,6 +103,6 @@ export default function ResumeButton() {
           </div>
         )}
       </div>
-    </Link>
+    </a>
   );
 }

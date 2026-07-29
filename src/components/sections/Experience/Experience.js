@@ -17,15 +17,17 @@ const themeStyles = {
     shadow: 'hover:shadow-indigo-500/20',
     border: 'hover:border-indigo-300/30 dark:hover:border-indigo-500/30',
     detailText: 'text-indigo-800 dark:text-indigo-300',
-    detailBg: 'bg-indigo-50 dark:bg-indigo-900/20'
+    detailBg: 'bg-indigo-50 dark:bg-indigo-900/20',
+    activeGlow: 'shadow-[0_0_25px_rgba(99,102,241,0.3)] border-indigo-400/50 dark:border-indigo-500/50 scale-[1.02]'
   },
   purple: {
-    text: 'text-blue-600 dark:text-blue-400',
+    text: 'text-purple-600 dark:text-purple-400',
     tag: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300',
     shadow: 'hover:shadow-purple-500/20',
     border: 'hover:border-purple-300/30 dark:hover:border-purple-500/30',
     detailText: 'text-purple-800 dark:text-purple-300',
-    detailBg: 'bg-purple-50 dark:bg-purple-900/20'
+    detailBg: 'bg-purple-50 dark:bg-purple-900/20',
+    activeGlow: 'shadow-[0_0_25px_rgba(168,85,247,0.3)] border-purple-400/50 dark:border-purple-500/50 scale-[1.02]'
   },
   blue: {
     text: 'text-blue-600 dark:text-blue-400',
@@ -33,15 +35,17 @@ const themeStyles = {
     shadow: 'hover:shadow-blue-500/20',
     border: 'hover:border-blue-300/30 dark:hover:border-blue-500/30',
     detailText: 'text-blue-800 dark:text-blue-300',
-    detailBg: 'bg-blue-50 dark:bg-blue-900/20'
+    detailBg: 'bg-blue-50 dark:bg-blue-900/20',
+    activeGlow: 'shadow-[0_0_25px_rgba(59,130,246,0.3)] border-blue-400/50 dark:border-blue-500/50 scale-[1.02]'
   },
   green: {
-    text: 'text-blue-600 dark:text-blue-400',
+    text: 'text-green-600 dark:text-green-400',
     tag: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
     shadow: 'hover:shadow-green-500/20',
     border: 'hover:border-green-300/30 dark:hover:border-green-500/30',
     detailText: 'text-green-700 dark:text-green-300',
-    detailBg: 'bg-green-50 dark:bg-green-900/20'
+    detailBg: 'bg-green-50 dark:bg-green-900/20',
+    activeGlow: 'shadow-[0_0_25px_rgba(34,197,94,0.3)] border-green-400/50 dark:border-green-500/50 scale-[1.02]'
   }
 };
 
@@ -106,7 +110,7 @@ function ExperienceCard({ item, isExpanded, onToggle }) {
 
   return (
     <div
-      className={`bg-white/10 dark:bg-gray-800/50 backdrop-blur-md rounded-xl p-6 shadow-lg border border-white/20 dark:border-gray-700/50 transition-all duration-300 cursor-pointer hover:shadow-xl ${styles.shadow} ${styles.border} transform hover:scale-[1.02]`}
+      className={`bg-white/10 dark:bg-gray-800/50 backdrop-blur-md rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer transform hover:scale-[1.02] ${isExpanded ? styles.activeGlow : `border-white/20 dark:border-gray-700/50 ${styles.shadow} ${styles.border}`}`}
       onClick={onToggle}
     >
       <div className="flex items-center gap-4 mb-4">

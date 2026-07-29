@@ -67,7 +67,7 @@ export default function Navbar() {
         <div className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-white/30 dark:border-gray-600/30 rounded-full px-8 py-4 shadow-lg flex items-center justify-between w-full max-w-4xl">
           
           {/* Left: Logo (stuck to left border) */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 transition-transform duration-200 active:scale-95 hover:opacity-80">
             <Image 
               src="/assets/favicons/main-logo.svg" 
               alt="Logo" 
@@ -104,7 +104,7 @@ export default function Navbar() {
         {/* Theme Toggle Capsule */}
         <button
           onClick={toggleTheme}
-          className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-white/30 dark:border-gray-600/30 rounded-full p-4 text-gray-900 dark:text-white text-xl hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-300 shadow-lg"
+          className="bg-white/20 dark:bg-black/20 backdrop-blur-md border border-white/30 dark:border-gray-600/30 rounded-full p-4 text-gray-900 dark:text-white text-xl hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-300 shadow-lg hover:rotate-[15deg] active:scale-90"
           aria-label="Toggle Dark Mode"
         >
           {isDark ? '☀️' : '🌙'}

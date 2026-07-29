@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import SectionWrapper from '../../layout/SectionWrapper';
 import ResumeButton from '../../ui/ResumeButton';
+import Magnetic from '../../ui/Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,8 +61,19 @@ export default function Hero() {
   return (
     <SectionWrapper
       id="hero"
-      className="min-h-[calc(100vh-6rem)] pt-3 flex items-center justify-center"
+      className="min-h-[calc(100vh-6rem)] pt-3 flex items-center justify-center relative"
     >
+      <style>
+        {`
+          @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+          }
+          .animate-subtle-float {
+            animation: subtle-float 6s ease-in-out infinite;
+          }
+        `}
+      </style>
       {/* Container ref moved here */}
       <div
         ref={containerRef}
@@ -70,7 +82,7 @@ export default function Hero() {
         {/* Profile Image */}
         <div
           ref={imageRef}
-          className="flex-shrink-0 p-1 rounded-full bg-white/10 backdrop-blur-md shadow-xl overflow-hidden"
+          className="flex-shrink-0 p-1 rounded-full bg-white/10 backdrop-blur-md shadow-xl overflow-hidden animate-subtle-float"
         >
           <Image
             src="/assets/images/swapnil.png"
@@ -105,15 +117,21 @@ export default function Hero() {
         {/* Buttons */}
         <div
           ref={buttonsRef}
-          className="flex flex-col gap-4 items-center md:items-start mt-6"
+          className="flex flex-col gap-4 items-center md:items-start mt-6 w-full max-w-[200px]"
         >
-          <Link
-            href="#contact"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-xl transition shadow-md w-full text-center"
-          >
-            Contact Me
-          </Link>
-          <ResumeButton />
+          <Magnetic>
+            <Link
+              href="#contact"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-xl transition-all duration-300 shadow-md w-full text-center hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] block"
+            >
+              Contact Me
+            </Link>
+          </Magnetic>
+          <Magnetic>
+            <div className="w-full">
+              <ResumeButton />
+            </div>
+          </Magnetic>
         </div>
       </div>
     </SectionWrapper>

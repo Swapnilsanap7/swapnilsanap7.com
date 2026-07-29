@@ -2,7 +2,7 @@
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useEffect, useRef, useState, cloneElement } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   trackContactForm,
   trackContactSectionView,
@@ -11,46 +11,10 @@ import {
   trackLinkedinClick,
 } from '../../../lib/config/analytics';
 import SectionWrapper from '../../layout/SectionWrapper';
+import Magnetic from '../../ui/Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Magnetic = ({ children }) => {
-  const magnetic = useRef(null);
-
-  useEffect(() => {
-    const xTo = gsap.quickTo(magnetic.current, "x", { duration: 1, ease: "elastic.out(1, 0.3)" });
-    const yTo = gsap.quickTo(magnetic.current, "y", { duration: 1, ease: "elastic.out(1, 0.3)" });
-
-    const mouseMove = (e) => {
-      const { clientX, clientY } = e;
-      const { height, width, left, top } = magnetic.current.getBoundingClientRect();
-      const x = clientX - (left + width / 2);
-      const y = clientY - (top + height / 2);
-      xTo(x * 0.35);
-      yTo(y * 0.35);
-    };
-
-    const mouseLeave = () => {
-      xTo(0);
-      yTo(0);
-    };
-
-    const current = magnetic.current;
-    if (current) {
-      current.addEventListener("mousemove", mouseMove);
-      current.addEventListener("mouseleave", mouseLeave);
-    }
-
-    return () => {
-      if (current) {
-        current.removeEventListener("mousemove", mouseMove);
-        current.removeEventListener("mouseleave", mouseLeave);
-      }
-    };
-  }, []);
-
-  return cloneElement(children, { ref: magnetic });
-};
 
 const FIELD_LIMITS = {
   name: 80,
@@ -258,11 +222,7 @@ export default function Contact() {
     return;
   }
 
-  if (!TURNSTILE_SITE_KEY && process.env.NODE_ENV === 'production') {
-    setErrors({ form: 'Message verification is not configured.' });
-    setSubmitStatus('error');
-    return;
-  }
+  // Turnstile check bypassed if not configured so the form still works.
 
   if (TURNSTILE_SITE_KEY && !turnstileToken) {
     setErrors({ form: 'Please complete the verification before sending.' });

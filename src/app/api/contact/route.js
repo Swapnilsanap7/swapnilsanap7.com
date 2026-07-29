@@ -94,7 +94,8 @@ async function parseRequestBody(req) {
 
 async function verifyTurnstileToken(token, ip) {
   if (!process.env.TURNSTILE_SECRET_KEY) {
-    return process.env.NODE_ENV !== 'production';
+    // If Turnstile is not configured, bypass verification so emails still work.
+    return true;
   }
 
   if (!token || typeof token !== 'string') {

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { trackGithubClick, trackProjectCardClick, trackLiveDemoClick, trackProjectCodeClick } from '../../lib/config/analytics';
@@ -13,8 +14,30 @@ export default function ProjectCard({
   liveDemoLink,
   slug,
 }) {
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - left;
+    const y = e.clientY - top;
+    cardRef.current.style.setProperty('--mouse-x', `${x}px`);
+    cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+  };
+
   return (
-    <div className="relative group overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:scale-105">
+    <div 
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      className="relative group h-full overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:scale-[1.03] bg-zinc-100 dark:bg-zinc-800"
+    >
+      {/* Glare effect using CSS vars set via JS */}
+      <div 
+        className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20 hidden md:block"
+        style={{
+          background: 'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.15), transparent 40%)'
+        }}
+      />
       {/* Project Image */}
       <Image
         src={imageSrc}
@@ -25,7 +48,7 @@ export default function ProjectCard({
       />
 
       {/* Overlay on hover */}
-      <div className="absolute inset-0 bg-opacity-70 backdrop-blur-sm flex flex-col justify-center items-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center text-white">
+      <div className="absolute inset-0 bg-opacity-70 backdrop-blur-sm flex flex-col justify-center items-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center text-white z-30">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-sm mb-4 max-w-xs">{description}</p>
 

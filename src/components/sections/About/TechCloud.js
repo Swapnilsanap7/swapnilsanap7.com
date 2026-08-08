@@ -33,6 +33,8 @@ export default function TechCloud() {
   useEffect(() => {
     const el = scrollRef.current;
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const tl = gsap.to(el, {
       x: "-50%",
       duration: 20,

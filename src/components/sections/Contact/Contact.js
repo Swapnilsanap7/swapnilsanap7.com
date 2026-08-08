@@ -23,6 +23,12 @@ const FIELD_LIMITS = {
   message: 3000,
 };
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+const LOADING_TEXTS = [
+  'Waking up the servers...',
+  'Encrypting message...',
+  'Routing to inbox...',
+  'Almost there...',
+];
 
 export default function Contact() {
   const formRef = useRef(null);
@@ -41,19 +47,13 @@ export default function Contact() {
   const [errors, setErrors] = useState({});
   const [honeypot, setHoneypot] = useState(''); // Spam protection
   const [turnstileToken, setTurnstileToken] = useState('');
-  const loadingTexts = [
-    "Waking up the servers...",
-    "Encrypting message...",
-    "Routing to inbox...",
-    "Almost there..."
-  ];
   const [loadingTextIndex, setLoadingTextIndex] = useState(0);
 
   useEffect(() => {
     let interval;
     if (isSubmitting) {
       interval = setInterval(() => {
-        setLoadingTextIndex((prev) => (prev + 1) % loadingTexts.length);
+        setLoadingTextIndex((prev) => (prev + 1) % LOADING_TEXTS.length);
       }, 1500);
     } else {
       setLoadingTextIndex(0);
@@ -102,8 +102,10 @@ export default function Contact() {
       }
     }
 
+    const shouldReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const ctx = gsap.context(() => {
-      gsap.from(formRef.current, {
+      if (!shouldReduceMotion) {
+        gsap.from(formRef.current, {
         scrollTrigger: {
           trigger: formRef.current,
           start: 'top 80%',
@@ -113,9 +115,9 @@ export default function Contact() {
         opacity: 0,
         duration: 1,
         ease: 'power2.out',
-      });
+        });
 
-      gsap.from(infoRef.current, {
+        gsap.from(infoRef.current, {
         scrollTrigger: {
           trigger: infoRef.current,
           start: 'top 80%',
@@ -126,7 +128,8 @@ export default function Contact() {
         duration: 1,
         ease: 'power2.out',
         delay: 0.2,
-      });
+        });
+      }
 
       ScrollTrigger.create({
         trigger: formRef.current,
@@ -306,7 +309,7 @@ export default function Contact() {
         <div ref={formRef} className="flex-1 w-full max-w-xl">
           {/* Success Celebration State */}
           {submitStatus === 'success' ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="flex flex-col items-center justify-center py-16 text-center" role="status" aria-live="polite">
               <div className="w-24 h-24 mb-6 rounded-full bg-green-500/10 flex items-center justify-center">
                 <svg className="w-12 h-12 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <style>
@@ -348,7 +351,7 @@ export default function Contact() {
             <>
               {/* Error Message */}
               {submitStatus === 'error' && (
-                <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg">
+                <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg" role="alert" aria-live="assertive">
                   <div className="flex items-center gap-2">
                     <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -359,7 +362,7 @@ export default function Contact() {
                 </div>
               )}
 
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate aria-busy={isSubmitting}>
             {/* Honeypot field for spam protection */}
             <input
               type="text"
@@ -383,6 +386,8 @@ export default function Contact() {
                   onChange={handleInputChange}
                   maxLength={FIELD_LIMITS.name}
                   required
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? 'name-error' : undefined}
                   className={`w-full px-4 py-3 bg-white/5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-300 text-[var(--dark)] dark:text-white backdrop-blur-sm ${
                     errors.name 
                       ? 'border-red-500 focus:ring-red-400 focus:shadow-[0_0_15px_rgba(239,68,68,0.2)]' 
@@ -390,7 +395,7 @@ export default function Contact() {
                   }`}
                   placeholder="Your name"
                 />
-                {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
+                {errors.name && <p id="name-error" className="text-red-400 text-sm mt-1" role="alert">{errors.name}</p>}
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-[var(--dark)] dark:text-[var(--light)] mb-2">
@@ -404,6 +409,8 @@ export default function Contact() {
                   onChange={handleInputChange}
                   maxLength={FIELD_LIMITS.email}
                   required
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
                   className={`w-full px-4 py-3 bg-white/5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-300 text-[var(--dark)] dark:text-white backdrop-blur-sm ${
                     errors.email 
                       ? 'border-red-500 focus:ring-red-400 focus:shadow-[0_0_15px_rgba(239,68,68,0.2)]' 
@@ -411,7 +418,7 @@ export default function Contact() {
                   }`}
                   placeholder="your.email@example.com"
                 />
-                {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
+                {errors.email && <p id="email-error" className="text-red-400 text-sm mt-1" role="alert">{errors.email}</p>}
               </div>
             </div>
             
@@ -427,6 +434,8 @@ export default function Contact() {
                 onChange={handleInputChange}
                 maxLength={FIELD_LIMITS.subject}
                 required
+                aria-invalid={Boolean(errors.subject)}
+                aria-describedby={errors.subject ? 'subject-error' : undefined}
                 className={`w-full px-4 py-3 bg-white/5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-300 text-[var(--dark)] dark:text-white backdrop-blur-sm ${
                   errors.subject 
                     ? 'border-red-500 focus:ring-red-400 focus:shadow-[0_0_15px_rgba(239,68,68,0.2)]' 
@@ -434,7 +443,7 @@ export default function Contact() {
                 }`}
                 placeholder="What&apos;s this about?"
               />
-              {errors.subject && <p className="text-red-400 text-sm mt-1">{errors.subject}</p>}
+              {errors.subject && <p id="subject-error" className="text-red-400 text-sm mt-1" role="alert">{errors.subject}</p>}
             </div>
             
             <div>
@@ -449,6 +458,8 @@ export default function Contact() {
                 onChange={handleInputChange}
                 maxLength={FIELD_LIMITS.message}
                 required
+                aria-invalid={Boolean(errors.message)}
+                aria-describedby={errors.message ? 'message-error' : undefined}
                 rows="6"
                 className={`w-full px-4 py-3 bg-white/5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-300 text-[var(--dark)] dark:text-white backdrop-blur-sm resize-none ${
                   errors.message 
@@ -457,7 +468,7 @@ export default function Contact() {
                 }`}
                 placeholder="Your message… (minimum 10 characters)"
               ></textarea>
-              {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
+              {errors.message && <p id="message-error" className="text-red-400 text-sm mt-1" role="alert">{errors.message}</p>}
             </div>
 
             {TURNSTILE_SITE_KEY && (
@@ -477,7 +488,7 @@ export default function Contact() {
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-3">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    <span className="inline-block min-w-[170px] text-left">{loadingTexts[loadingTextIndex]}</span>
+                    <span className="inline-block min-w-[170px] text-left" aria-live="polite">{LOADING_TEXTS[loadingTextIndex]}</span>
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-2">
@@ -543,6 +554,7 @@ export default function Contact() {
                   href="https://github.com/Swapnilsanap7/"
                   target="_blank"
                   rel="noopener noreferrer" 
+                  aria-label="GitHub profile"
                   onClick={() => trackGithubClick('contact')}
                   className="w-10 h-10 bg-blue-500/20 hover:bg-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] rounded-full flex items-center justify-center transition-all duration-300 group">
                     <svg className="w-5 h-5 text-blue-500 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -555,6 +567,7 @@ export default function Contact() {
                   href="https://www.linkedin.com/in/swapnilsanap7/"
                   target="_blank"
                   rel="noopener noreferrer" 
+                  aria-label="LinkedIn profile"
                   onClick={() => trackLinkedinClick('contact')}
                   className="w-10 h-10 bg-blue-500/20 hover:bg-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] rounded-full flex items-center justify-center transition-all duration-300 group">
                     <svg className="w-5 h-5 text-blue-500 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -567,6 +580,7 @@ export default function Contact() {
                   href="https://x.com/swapnilsanap7"
                   target="_blank"
                   rel="noopener noreferrer" 
+                  aria-label="X profile"
                   className="w-10 h-10 bg-blue-500/20 hover:bg-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] rounded-full flex items-center justify-center transition-all duration-300 group">
                     <svg className="w-5 h-5 text-blue-500 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>

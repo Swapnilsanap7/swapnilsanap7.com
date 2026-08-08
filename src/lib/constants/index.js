@@ -9,7 +9,7 @@ export const SITE_CONFIG = {
   title: 'Swapnil Sanap - Full Stack Developer & Software Engineer',
   description: 'Experienced Full Stack Developer specializing in React.js, Next.js, Node.js, and modern web technologies. Building scalable applications with clean code and innovative solutions.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://swapnilsanap7.com',
-  ogImage: '/og-image.png',
+  ogImage: '/og.png',
   links: {
     github: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/Swapnilsanap7',
     linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://www.linkedin.com/in/swapnilsanap7/',

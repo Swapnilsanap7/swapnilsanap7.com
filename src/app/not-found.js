@@ -12,6 +12,8 @@ export default function NotFound() {
   const textRef = useRef(null);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     gsap.fromTo(
       bugRef.current,
       { y: 0 },
@@ -90,7 +92,7 @@ export default function NotFound() {
             </Link>
 
             <Link
-              href="/#projects"
+              href="/#project"
               className="text-green-400 hover:text-green-300 transition-colors font-medium"
             >
               View Projects

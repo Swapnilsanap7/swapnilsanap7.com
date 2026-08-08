@@ -8,8 +8,8 @@
   --accent: #0066FF;
 }
 
-/* Prevent image dragging, copying, and right-clicking globally */
-img, svg {
+/* Keep decorative images from being dragged without blocking interaction. */
+img {
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -17,5 +17,20 @@ img, svg {
   user-drag: none;
   -webkit-user-select: none;
   user-select: none;
-  pointer-events: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

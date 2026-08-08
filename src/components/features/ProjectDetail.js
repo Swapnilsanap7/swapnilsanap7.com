@@ -14,6 +14,9 @@ export default function ProjectDetail({ project }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const modalRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const modalOpenerRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
@@ -29,6 +32,8 @@ export default function ProjectDetail({ project }) {
 
   useEffect(() => {
     trackProjectView(project.title);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const ctx = gsap.context(() => {
       // Back button animation
@@ -139,17 +144,19 @@ export default function ProjectDetail({ project }) {
     return () => ctx.revert();
   }, [project.title]);
 
-  const openModal = (index) => {
+  const openModal = (index, event) => {
+    modalOpenerRef.current = event.currentTarget;
     setSelectedImage(index);
     setIsModalOpen(true);
-    document.body.style.overflow = 'hidden'; // Prevent background scroll
+    document.body.style.overflow = 'hidden';
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
     setSelectedImage(null);
-    document.body.style.overflow = 'unset'; // Restore scroll
-  };
+    document.body.style.overflow = '';
+    requestAnimationFrame(() => modalOpenerRef.current?.focus());
+  }, []);
 
   const nextImage = useCallback(() => {
     if (!project.gallery) return;
@@ -176,6 +183,27 @@ export default function ProjectDetail({ project }) {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!isModalOpen) return;
+
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll(
+          'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
       
       switch (e.key) {
         case 'Escape':
@@ -192,7 +220,16 @@ export default function ProjectDetail({ project }) {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isModalOpen, nextImage, prevImage]);
+  }, [closeModal, isModalOpen, nextImage, prevImage]);
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    closeButtonRef.current?.focus();
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isModalOpen]);
 
   return (
     <div className="min-h-screen ">
@@ -254,6 +291,7 @@ export default function ProjectDetail({ project }) {
                   <Link
                     href={project.liveDemoLink}
                     target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => trackLiveDemoClick(project.title, 'detail_hero')}
                     className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl shadow-blue-500/25"
                   >
@@ -266,6 +304,7 @@ export default function ProjectDetail({ project }) {
                   <Link
                     href={project.githubLink}
                     target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => {
                       trackGithubClick('project');
                       trackProjectCodeClick(project.title, 'detail_hero');
@@ -499,10 +538,12 @@ export default function ProjectDetail({ project }) {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {project.gallery.map((image, index) => (
-                <div
+                <button
+                  type="button"
                   key={index}
-                  className="gallery-item relative aspect-video rounded-xl overflow-hidden shadow-xl cursor-pointer hover:shadow-2xl transition-shadow duration-300 border border-[var(--dark)]/10 dark:border-white/10"
-                  onClick={() => openModal(index)}
+                  className="gallery-item relative aspect-video w-full rounded-xl overflow-hidden shadow-xl cursor-pointer hover:shadow-2xl transition-shadow duration-300 border border-[var(--dark)]/10 dark:border-white/10 focus-visible:ring-2 focus-visible:ring-blue-500"
+                  onClick={(event) => openModal(index, event)}
+                  aria-label={`Open ${project.title} screenshot ${index + 1} of ${project.gallery.length}`}
                 >
                   <Image
                     src={image}
@@ -510,7 +551,7 @@ export default function ProjectDetail({ project }) {
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
                   />
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -556,6 +597,7 @@ export default function ProjectDetail({ project }) {
                 <Link
                   href={project.liveDemoLink}
                   target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => trackLiveDemoClick(project.title, 'detail_footer')}
                   className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-xl shadow-blue-500/25"
                 >
@@ -566,6 +608,7 @@ export default function ProjectDetail({ project }) {
                 <Link
                   href={project.githubLink}
                   target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => {
                     trackGithubClick('project');
                     trackProjectCodeClick(project.title, 'detail_footer');
@@ -583,6 +626,10 @@ export default function ProjectDetail({ project }) {
       {/* Image Modal */}
       {mounted && isModalOpen && selectedImage !== null && project.gallery && createPortal(
         <div
+          ref={modalRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${project.title} image gallery`}
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
           onClick={closeModal}
           style={{ opacity: 1 }}
@@ -595,6 +642,8 @@ export default function ProjectDetail({ project }) {
           >
             {/* Close Button */}
             <button
+              ref={closeButtonRef}
+              type="button"
               onClick={closeModal}
               className="absolute top-4 right-4 z-20 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-all duration-200 hover:scale-110"
               aria-label="Close modal"
@@ -608,6 +657,7 @@ export default function ProjectDetail({ project }) {
             {project.gallery.length > 1 && (
               <>
                 <button
+                  type="button"
                   onClick={prevImage}
                   className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
                   aria-label="Previous image"
@@ -617,6 +667,7 @@ export default function ProjectDetail({ project }) {
                   </svg>
                 </button>
                 <button
+                  type="button"
                   onClick={nextImage}
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
                   aria-label="Next image"

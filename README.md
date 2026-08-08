@@ -75,10 +75,14 @@ cd swapnilsanap7.com
 npm install
 ```
 
-### 4. Set Up Environment Variables (Optional)
-Create a `.env.local` file in the root folder to configure Google Analytics:
+### 4. Set Up Environment Variables
+Copy `.env.example` to `.env.local`, then provide the services you want to enable. The site URL and mail settings are required for the contact form. Turnstile and Upstash Redis are recommended for spam protection and durable serverless rate limiting.
 ```env
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_GA_ID=G-YOUR_MEASUREMENT_ID
+APPLE_SMTP_USER=your-apple-id@example.com
+APPLE_SMTP_PASS=your-app-specific-password
+MAIL_FROM=hello@example.com
 ```
 
 ### 5. Start the Development Server

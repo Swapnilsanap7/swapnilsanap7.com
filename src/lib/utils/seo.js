@@ -57,7 +57,7 @@ export function generatePersonSchema() {
     "@type": "Person",
     "name": "Swapnil Sanap",
     "url": "https://swapnilsanap7.com",
-    "image": "https://swapnilsanap7.com/swapnil.png",
+    "image": "https://swapnilsanap7.com/assets/images/swapnil.png",
     "sameAs": [
       "https://github.com/Swapnilsanap7",
       "https://www.linkedin.com/in/swapnilsanap7/",
@@ -65,9 +65,9 @@ export function generatePersonSchema() {
     ],
     "jobTitle": "Full Stack Developer",
     "worksFor": {
-      "@type": "EducationalOrganization",
-      "name": "University of Illinois Springfield",
-      "url": "https://www.uis.edu/"
+      "@type": "Organization",
+      "name": "DXC Technology",
+      "url": "https://dxc.com/"
     },
     "alumniOf": {
       "@type": "EducationalOrganization",
@@ -112,14 +112,6 @@ export function generateWebSiteSchema() {
     "author": {
       "@type": "Person",
       "name": "Swapnil Sanap"
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://swapnilsanap7.com/#projects"
-      },
-      "query-input": "required name=search_term_string"
     }
   };
 }

@@ -19,7 +19,7 @@ export const IMAGES = {
   errorGif: `${IMAGES_BASE}/error.gif`,
   
   // Preview images
-  resumePreview: `${IMAGES_BASE}/resume-preview.png`,
+  resumePreview: `${IMAGES_BASE}/resume-preview.webp`,
   
   // Project images (in organized folders)
   projects: {
@@ -104,10 +104,10 @@ export const ASSET_CONFIG = {
 
 // SEO and Open Graph Images
 export const SEO_IMAGES = {
-  ogImage: '/og-image.png',
-  twitterImage: '/twitter-image.png',
-  appleTouchIcon: '/apple-touch-icon.png',
-  favicon: '/favicon.ico',
+  ogImage: '/og.png',
+  twitterImage: '/og.png',
+  appleTouchIcon: `${FAVICONS_BASE}/web-app-manifest-192x192.png`,
+  favicon: `${FAVICONS_BASE}/main-logo.svg`,
 };
 
 const assets = {

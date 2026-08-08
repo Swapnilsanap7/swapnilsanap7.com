@@ -12,6 +12,8 @@ export default function ResumeButton() {
   const previewRef = useRef(null);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -50,6 +52,8 @@ export default function ResumeButton() {
   }, []);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     if (!previewRef.current) return;
 
     const ctx = gsap.context(() => {
@@ -94,7 +98,7 @@ export default function ResumeButton() {
             className="bg-black bg-opacity-60 overflow-hidden"
           >
             <Image
-              src="/assets/images/resume-preview.png"
+              src="/assets/images/resume-preview.webp"
               alt="Resume preview"
               width={320}
               height={160}

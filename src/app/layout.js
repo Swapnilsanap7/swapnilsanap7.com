@@ -2,8 +2,8 @@ import { GoogleTagManager } from '@next/third-parties/google';
 import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 import SmoothScrollWrapper from '../components/layout/SmoothScrollWrapper';
-import './globals.css';
 import { generatePersonSchema, generateWebSiteSchema } from '../lib/utils/seo';
+import './globals.css';
 
 
 export const metadata = {
@@ -56,7 +56,7 @@ export const metadata = {
     description: 'Experienced Full Stack Developer specializing in React, Next.js, Node.js, and modern web technologies. MS in Computer Science from University of Illinois Springfield.',
     images: [
       {
-        url: '/assets/images/swapnil.png',
+        url: '/og.png',
         width: 1200,
         height: 630,
         alt: 'Swapnil Sanap - Full Stack Developer',
@@ -70,7 +70,7 @@ export const metadata = {
     creator: '@swapnilsanap7',
     title: 'Swapnil Sanap - Full Stack Developer & Software Engineer',
     description: 'Experienced Full Stack Developer specializing in React, Next.js, Node.js, and modern web technologies.',
-    images: ['/assets/images/swapnil.png'],
+    images: ['/og.png'],
   },
   robots: {
     index: true,
@@ -98,8 +98,13 @@ export default function RootLayout({ children }) {
 
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})();`,
+          }}
+        />
         <GoogleTagManager gtmId="GTM-5S63WMNJ" />
 
         {/* Structured Data */}

@@ -18,6 +18,8 @@ export default function Hero() {
   const buttonsRef = useRef(null);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const ctx = gsap.context(() => {
       gsap.from(imageRef.current, {
         x: 50,
@@ -106,8 +108,7 @@ export default function Hero() {
             Hi, I’m <span className="text-blue-600 dark:text-blue-400">Swapnil Sanap</span>
           </h1>
           <p className="mt-4 text-lg md:text-xl text-[var(--dark)] dark:text-[var(--light)] max-w-md">
-            I craft intuitive web interfaces with clean design, smooth
-            interaction, and just the right amount of flair.
+            Full-stack software engineer building secure web products and AI-powered tools with Next.js, Node.js, and Python.
           </p>
         </div>
 

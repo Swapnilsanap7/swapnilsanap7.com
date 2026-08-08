@@ -4,8 +4,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { FaArrowUp } from 'react-icons/fa';
-import { SiGithub, SiGmail, SiLinkedin } from 'react-icons/si';
+import { FaArrowUp, FaLinkedinIn } from 'react-icons/fa';
+import { SiGithub, SiGmail } from 'react-icons/si';
 import {
   trackEmailClick,
   trackGithubClick,
@@ -35,9 +35,11 @@ export default function Footer() {
   }, []);
 
   const scrollToTop = () => {
-    // Use both methods to ensure compatibility
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    gsap.to(window, { duration: 1, scrollTo: 0, ease: "power2.out" });
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    if (!reduceMotion) {
+      gsap.to(window, { duration: 1, scrollTo: 0, ease: "power2.out" });
+    }
   };
 
   return (
@@ -67,6 +69,7 @@ export default function Footer() {
             <Link
               href="https://github.com/Swapnilsanap7"
               target="_blank"
+              rel="noopener noreferrer"
               aria-label="GitHub"
               onClick={() => trackGithubClick('footer')}
             >
@@ -75,10 +78,11 @@ export default function Footer() {
             <Link
               href="https://www.linkedin.com/in/swapnilsanap7/"
               target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
               onClick={() => trackLinkedinClick('footer')}
             >
-              <SiLinkedin className="hover:text-black dark:hover:text-white transition" />
+              <FaLinkedinIn className="hover:text-black dark:hover:text-white transition" />
             </Link>
             <Link
               href="mailto:hello@swapnilsanap7.com"

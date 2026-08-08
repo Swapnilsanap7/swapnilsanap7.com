@@ -10,11 +10,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Top 5 skills data
 const topSkills = [
-  { name: 'React.js', level: 95, icon: '/icons/react.svg', projectLink: '#projects' },
-  { name: 'Next.js', level: 90, icon: '/icons/next.js.svg', projectLink: '#projects' },
-  { name: 'JavaScript (ES6+)', level: 93, icon: '/icons/js.svg', projectLink: '#projects' },
-  { name: 'React Native', level: 85, icon: '/icons/react.svg', projectLink: '#projects' },
-  { name: 'Node.js', level: 88, icon: '/icons/node.svg', projectLink: '#projects' }
+  { name: 'React.js', level: 95, icon: '/icons/react.svg', projectLink: '#project' },
+  { name: 'Next.js', level: 90, icon: '/icons/next.js.svg', projectLink: '#project' },
+  { name: 'JavaScript (ES6+)', level: 93, icon: '/icons/js.svg', projectLink: '#project' },
+  { name: 'React Native', level: 85, icon: '/icons/react.svg', projectLink: '#project' },
+  { name: 'Node.js', level: 88, icon: '/icons/node.svg', projectLink: '#project' }
 ];
 
 // Additional skills grouped by category
@@ -44,6 +44,8 @@ export default function Skills() {
   const additionalSkillsRef = useRef(null);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const ctx = gsap.context(() => {
       // Title animation
       gsap.from(titleRef.current, {
@@ -122,12 +124,14 @@ export default function Skills() {
         {/* Layer 1 - Top Skills */}
         <div className="flex flex-wrap justify-center gap-6 md:gap-10 max-w-4xl mx-auto">
           {topSkills.map((skill, index) => (
-            <div
+            <button
+              type="button"
               key={skill.name}
               ref={el => skillCardsRef.current[index] = el}
-              className="group flex flex-col items-center gap-3 p-4 rounded-xl transition-all duration-300 cursor-pointer"
+              className="group flex flex-col items-center gap-3 p-4 rounded-xl transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500"
               onClick={() => handleIconClick(skill)}
               title="Click to see related projects"
+              aria-label={`View projects using ${skill.name}`}
             >
               <div 
                 className="w-16 h-16 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1 group-hover:drop-shadow-xl"
@@ -147,7 +151,7 @@ export default function Skills() {
               <h3 className="text-[var(--dark)] dark:text-white font-medium text-lg tracking-wide opacity-80 group-hover:opacity-100 transition-opacity">
                 {skill.name}
               </h3>
-            </div>
+            </button>
           ))}
         </div>
 

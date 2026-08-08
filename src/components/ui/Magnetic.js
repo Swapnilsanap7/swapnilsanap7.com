@@ -10,7 +10,7 @@ export default function Magnetic({ children }) {
     // We use matchMedia to only enable Magnetic on devices with fine pointers (mice)
     const mm = gsap.matchMedia();
     
-    mm.add("(pointer: fine)", () => {
+    mm.add("(pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
       const xTo = gsap.quickTo(magnetic.current, "x", { duration: 1, ease: "elastic.out(1, 0.3)" });
       const yTo = gsap.quickTo(magnetic.current, "y", { duration: 1, ease: "elastic.out(1, 0.3)" });
 

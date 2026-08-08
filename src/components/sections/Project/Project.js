@@ -14,6 +14,8 @@ export default function Project() {
   const headingRef = useRef(null);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const ctx = gsap.context(() => {
       // Heading entrance
       gsap.from(headingRef.current, {

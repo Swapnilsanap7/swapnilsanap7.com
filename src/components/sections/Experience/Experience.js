@@ -107,13 +107,20 @@ const renderSectionContent = (section, styles) => {
 
 function ExperienceCard({ item, isExpanded, onToggle }) {
   const styles = themeStyles[item.themeColor] || themeStyles.indigo;
+  const detailsId = `experience-details-${item.id}`;
 
   return (
-    <div
-      className={`bg-white/10 dark:bg-gray-800/50 backdrop-blur-md rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer transform hover:scale-[1.02] ${isExpanded ? styles.activeGlow : `border-white/20 dark:border-gray-700/50 ${styles.shadow} ${styles.border}`}`}
-      onClick={onToggle}
+    <article
+      className={`bg-white/10 dark:bg-gray-800/50 backdrop-blur-md rounded-xl p-6 shadow-lg border transition-all duration-300 transform hover:scale-[1.02] ${isExpanded ? styles.activeGlow : `border-white/20 dark:border-gray-700/50 ${styles.shadow} ${styles.border}`}`}
     >
-      <div className="flex items-center gap-4 mb-4">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isExpanded}
+        aria-controls={detailsId}
+        className="w-full rounded-lg text-left focus-visible:ring-2 focus-visible:ring-blue-500"
+      >
+        <div className="flex items-center gap-4 mb-4">
         <div className={`w-12 h-12 rounded-full p-2 shadow-md relative transition-transform duration-300 hover:scale-110 flex items-center justify-center ${typeof item.logoSrc === 'object' ? 'bg-white dark:bg-transparent' : 'bg-white'}`}>
           {typeof item.logoSrc === 'object' ? (
             <>
@@ -153,26 +160,28 @@ function ExperienceCard({ item, isExpanded, onToggle }) {
             <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         </div>
-      </div>
+        </div>
 
-      <p className="text-[var(--dark)] dark:text-[var(--light)] mb-3">
-        {item.company}
-      </p>
+        <p className="text-[var(--dark)] dark:text-[var(--light)] mb-3">
+          {item.company}
+        </p>
 
-      <div className="flex flex-wrap gap-2 mb-4">
-        {item.tags.map((tag) => (
-          <span
-            key={tag}
-            className={`px-3 py-1 ${styles.tag} rounded-full text-sm transition-all duration-200 hover:scale-105`}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {item.tags.map((tag) => (
+            <span
+              key={tag}
+              className={`px-3 py-1 ${styles.tag} rounded-full text-sm transition-all duration-200 hover:scale-105`}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </button>
 
       {/* Expanded Content */}
       {isExpanded && (
         <div
+          id={detailsId}
           className="border-t border-white/20 dark:border-gray-600 pt-4 mt-4 overflow-hidden"
           data-expand-id={item.id}
         >
@@ -188,7 +197,7 @@ function ExperienceCard({ item, isExpanded, onToggle }) {
           </div>
         </div>
       )}
-    </div>
+    </article>
   );
 }
 
@@ -200,6 +209,12 @@ export default function Experience() {
   const toggleExpand = (cardId) => {
     const isExpanding = expandedCard !== cardId;
     const targetCard = cardId;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (isExpanding) trackExperienceExpand(cardId);
+      setExpandedCard(isExpanding ? cardId : null);
+      return;
+    }
 
     if (isExpanding) {
       trackExperienceExpand(cardId);
@@ -240,6 +255,8 @@ export default function Experience() {
   };
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     if (expandedCard) {
       const expandedContent = document.querySelector(`[data-expand-id="${expandedCard}"]`);
       if (expandedContent) {
@@ -271,6 +288,8 @@ export default function Experience() {
   }, [expandedCard]);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const ctx = gsap.context(() => {
       const items = timelineRef.current?.querySelectorAll('.timeline-item');
       if (items) {

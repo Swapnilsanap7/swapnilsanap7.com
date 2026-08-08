@@ -1,10 +1,10 @@
+import ScrollTracker from '../components/features/ScrollTracker';
 import About from '../components/sections/About/About';
 import Contact from '../components/sections/Contact/Contact';
 import Experience from '../components/sections/Experience/Experience';
 import Hero from '../components/sections/Hero/Hero';
 import Project from '../components/sections/Project/Project';
 import Skills from '../components/sections/Skills/Skills';
-import ScrollTracker from '../components/features/ScrollTracker';
 
 // Enhanced metadata for the home page
 export const metadata = {
@@ -32,7 +32,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/assets/images/swapnil.png',
+        url: '/og.png',
         width: 1200,
         height: 630,
         alt: 'Swapnil Sanap - Full Stack Developer',
@@ -43,7 +43,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Swapnil Sanap - Full Stack Developer Portfolio',
     description: 'Experienced Full Stack Developer specializing in modern web technologies.',
-    images: ['/assets/images/swapnil.png'],
+    images: ['/og.png'],
   },
   alternates: {
     canonical: 'https://swapnilsanap7.com',

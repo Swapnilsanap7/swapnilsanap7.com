@@ -15,6 +15,8 @@ export default function About() {
   const modelRef = useRef(null);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const ctx = gsap.context(() => {
       gsap.from(textRef.current, {
         scrollTrigger: {
@@ -67,13 +69,13 @@ export default function About() {
         {/* Left: About Text */}
         <div ref={textRef} className="flex-1 text-center md:text-left max-w-xl">
           <p className="text-[var(--dark)] dark:text-[var(--light)] text-lg leading-7">
-            I&apos;m a software developer with a passion for building full-stack applications that are clean, efficient, and user-centered.
+            I&apos;m a software engineer focused on full-stack product development and applied AI. I turn product requirements into accessible interfaces, reliable APIs, and maintainable data workflows.
           </p>
           <p className="text-[var(--dark)] dark:text-[var(--light)] text-lg leading-7 mt-4">
-            I love working on both frontend interfaces and backend systems...
+            At DXC Technology, I work with Python services, machine-learning workflows, and LLM integrations. Previously, I built and improved web and mobile experiences for the University of Illinois Springfield using React, Node.js, and React Native.
           </p>
           <p className="text-[var(--dark)] dark:text-[var(--light)] text-lg leading-7 mt-4">
-            I&apos;ve worked across mobile apps, full-stack projects, and CMS-based platforms...
+            I hold a master&apos;s degree in Computer Science from UIS. My projects include personal-finance tools, expense-sharing applications, ecommerce interfaces, and this portfolio&apos;s animation and analytics system.
           </p>
           <p className="text-blue-600 dark:text-blue-400 text-base mt-6 italic">
             Fun fact: I sometimes refactor my personal projects just for fun.

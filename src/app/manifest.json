@@ -29,13 +29,5 @@
       "type": "image/svg+xml",
       "purpose": "any"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/project/portfolio/1.jpg",
-      "sizes": "1280x720",
-      "type": "image/jpeg",
-      "form_factor": "wide"
-    }
   ]
 }

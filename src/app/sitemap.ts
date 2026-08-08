@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next'
+import { PROJECTS_DATA } from '../lib/constants'
  
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://swapnilsanap7.com'
   
-  // Static pages
   const staticPages = [
     {
       url: baseUrl,
@@ -11,17 +11,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 1,
     },
-    {
-      url: `${baseUrl}/resume`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
   ]
   
-  // Project pages
-  const projectSlugs = ['portfolio-website', 'ecommerce-showcase', 'smartmenu-plus', 'splitxpense']
-  const projectPages = projectSlugs.map(slug => ({
+  const projectPages = Object.keys(PROJECTS_DATA).map(slug => ({
     url: `${baseUrl}/projects/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,

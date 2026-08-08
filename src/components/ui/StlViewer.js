@@ -18,6 +18,7 @@ function Model() {
   const [lastInteraction, setLastInteraction] = useState(Date.now());
   const hasReset = useRef(false);
   const pointerRef = useRef({ x: 0, y: 0 });
+  const prefersReducedMotion = useRef(false);
   const idleTime = 1000; // 1 second idle
 
   const originalPose = { x: 0.3, z: 0.1 };
@@ -25,6 +26,8 @@ function Model() {
 
   // Apply correct cursor states
   useEffect(() => {
+    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     if (isDragging) {
       document.body.style.cursor = 'grabbing';
     } else if (isHovered) {
@@ -75,6 +78,7 @@ function Model() {
   useFrame((state) => {
     const mesh = meshRef.current;
     if (!mesh) return;
+    if (prefersReducedMotion.current) return;
 
     // Continuous Y rotation (paused while dragging)
     if (!isDragging) mesh.rotation.y += rotationSpeed.current;

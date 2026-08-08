@@ -8,8 +8,8 @@ export const PROJECTS_DATA = {
     slug: 'portfolio-website',
     title: 'Portfolio Website',
     subtitle: 'A modern portfolio showcasing my development journey',
-    description: 'My personal website showcasing projects and skills.',
-    fullDescription: 'A modern, responsive portfolio website built with Next.js and TailwindCSS. Features smooth animations, dark mode support, and a clean design showcasing my development skills and projects.',
+    description: 'A responsive portfolio with accessible project stories, theme support, analytics, and motion design.',
+    fullDescription: 'This portfolio uses the Next.js App Router and TailwindCSS to present my experience and projects through reusable, data-driven pages. It combines responsive layouts, accessible interaction patterns, dark mode, event analytics, and GSAP motion while keeping project content centralized for easier maintenance.',
     displayType: 'browser',
     imageSrc: '/project/portfolio/thumbnail.jpg', // Thumbnail for home grid
     detailImage: '/project/portfolio/hero.png', // Main image for details page
@@ -70,9 +70,7 @@ export const PROJECTS_DATA = {
       { name: 'Gemini AI', icon: '/icons/google-gemini.svg', description: 'Google Gemini 2.5 Flash for OCR and intelligent context.' }
     ],
     gallery: [
-      '/project/safe-spend/hero.png', // 970 x 1920
-      '/project/safe-spend/gallery-2.png', // 970 x 1920
-      '/project/safe-spend/gallery-3.png' // 970 x 1920
+      '/project/safe-spend/hero.png'
     ],
     caseStudy: {
       challenge: 'Creating a secure, high-performance personal finance app that keeps page loads instantaneous while integrating AI tools safely.',
@@ -90,7 +88,7 @@ export const PROJECTS_DATA = {
     detailImage: '/project/E-Commerce/hero.jpg',
     githubLink: 'https://github.com/Swapnilsanap7/Ecommerce-Showcase',
     liveDemoLink: 'https://swapnilsanap7.github.io/Ecommerce-Showcase/',
-    techStack: ['React', 'Firebase', 'TailwindCSS'],
+    techStack: ['HTML', 'CSS', 'JavaScript'],
     hero: {
       tagline: 'A beautifully designed UI for showcasing ecommerce products',
       mainImage: '/project/E-Commerce/hero.jpg'
@@ -157,9 +155,9 @@ export const PROJECTS_DATA = {
   },
   'progate-to-modern-web': {
     slug: 'progate-to-modern-web',
-    title: 'progate-to-modern-web',
+    title: 'Progate to Modern Web',
     subtitle: 'Evolution of my web development journey',
-    description: 'It is not Classified.',
+    description: 'A before-and-after rebuild showing my growth from an early college project to a modern, accessible website.',
     fullDescription: 'This project revisits an original site I built during college with Progate, and rebuilds it using semantic HTML5, responsive CSS (Flexbox & Grid), performance-optimised assets and minimal JavaScript. It showcases how my skills have grown from learning to building with best practices in mind.',
     displayType: 'browser',
     imageSrc: '/project/webio/thumbnail.png',

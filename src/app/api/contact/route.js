@@ -11,6 +11,7 @@ const MAX_FIELD_LENGTHS = {
 };
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
+const MAX_MEMORY_RATE_LIMIT_ENTRIES = 1000;
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const rateLimitStore = new Map();
 
@@ -23,19 +24,60 @@ function getClientIp(req) {
   return req.headers.get('x-real-ip') || 'unknown';
 }
 
-function isRateLimited(ip) {
+function isMemoryRateLimited(ip) {
   const now = Date.now();
-  const bucket = rateLimitStore.get(ip) || [];
-  const recentRequests = bucket.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS);
+  const current = rateLimitStore.get(ip);
 
-  if (recentRequests.length >= RATE_LIMIT_MAX_REQUESTS) {
-    rateLimitStore.set(ip, recentRequests);
-    return true;
+  for (const [key, entry] of rateLimitStore) {
+    if (entry.resetAt <= now) rateLimitStore.delete(key);
   }
 
-  recentRequests.push(now);
-  rateLimitStore.set(ip, recentRequests);
-  return false;
+  if (!current || current.resetAt <= now) {
+    if (rateLimitStore.size >= MAX_MEMORY_RATE_LIMIT_ENTRIES) {
+      rateLimitStore.delete(rateLimitStore.keys().next().value);
+    }
+    rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  current.count += 1;
+  rateLimitStore.set(ip, current);
+  return current.count > RATE_LIMIT_MAX_REQUESTS;
+}
+
+async function isRateLimited(ip) {
+  const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
+  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  if (!redisUrl || !redisToken) {
+    return isMemoryRateLimited(ip);
+  }
+
+  const windowId = Math.floor(Date.now() / RATE_LIMIT_WINDOW_MS);
+  const key = `portfolio:contact:${ip}:${windowId}`;
+
+  try {
+    const response = await fetch(`${redisUrl}/pipeline`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${redisToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify([
+        ['INCR', key],
+        ['PEXPIRE', key, RATE_LIMIT_WINDOW_MS, 'NX'],
+      ]),
+      cache: 'no-store',
+    });
+
+    if (!response.ok) throw new Error('Rate-limit store unavailable');
+
+    const result = await response.json();
+    return Number(result?.[0]?.result || 0) > RATE_LIMIT_MAX_REQUESTS;
+  } catch (error) {
+    console.error('Rate-limit fallback:', error);
+    return isMemoryRateLimited(ip);
+  }
 }
 
 function sanitizeHeader(value) {
@@ -86,7 +128,11 @@ async function parseRequestBody(req) {
   }
 
   try {
-    return { body: JSON.parse(rawBody) };
+    const body = JSON.parse(rawBody);
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return { error: 'Invalid JSON body', status: 400 };
+    }
+    return { body };
   } catch {
     return { error: 'Invalid JSON', status: 400 };
   }
@@ -128,12 +174,6 @@ export async function POST(req) {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const ip = getClientIp(req);
-
-    if (isRateLimited(ip)) {
-      return Response.json({ error: 'Too many requests' }, { status: 429 });
-    }
-
     const parsed = await parseRequestBody(req);
     if (parsed.error) {
       return Response.json({ error: parsed.error }, { status: parsed.status });
@@ -151,13 +191,19 @@ export async function POST(req) {
       return Response.json({ success: true });
     }
 
+    if (!name || !email || !subject || !message || !isValidEmail(email)) {
+      return Response.json({ error: 'Missing or invalid fields' }, { status: 400 });
+    }
+
+    const ip = getClientIp(req);
+
+    if (await isRateLimited(ip)) {
+      return Response.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     const isHuman = await verifyTurnstileToken(turnstileToken, ip);
     if (!isHuman) {
       return Response.json({ error: 'Verification failed' }, { status: 403 });
-    }
-
-    if (!name || !email || !subject || !message || !isValidEmail(email)) {
-      return Response.json({ error: 'Missing fields' }, { status: 400 });
     }
 
     if (!process.env.APPLE_SMTP_USER || !process.env.APPLE_SMTP_PASS || !process.env.MAIL_FROM || !process.env.NEXT_PUBLIC_SITE_URL) {

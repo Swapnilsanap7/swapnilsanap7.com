@@ -3,6 +3,10 @@
  * This component can be used across different pages for consistent SEO
  */
 
+export const SITE_URL = 'https://swapnilsanap7.com';
+
+const absoluteUrl = (path) => new URL(path, SITE_URL).toString();
+
 export function generateSEO({
   title,
   description,
@@ -55,13 +59,14 @@ export function generatePersonSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": `${SITE_URL}/#person`,
     "name": "Swapnil Sanap",
-    "url": "https://swapnilsanap7.com",
-    "image": "https://swapnilsanap7.com/assets/images/swapnil.png",
+    "url": SITE_URL,
+    "image": `${SITE_URL}/assets/images/swapnil.png`,
+    "email": "hello@swapnilsanap7.com",
     "sameAs": [
       "https://github.com/Swapnilsanap7",
-      "https://www.linkedin.com/in/swapnilsanap7/",
-      "mailto:hello@swapnilsanap7.com"
+      "https://www.linkedin.com/in/swapnilsanap7/"
     ],
     "jobTitle": "Full Stack Developer",
     "worksFor": {
@@ -106,12 +111,62 @@ export function generateWebSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
     "name": "Swapnil Sanap Portfolio",
     "description": "Professional portfolio of Swapnil Sanap, Full Stack Developer and Software Engineer",
-    "url": "https://swapnilsanap7.com",
+    "url": SITE_URL,
     "author": {
-      "@type": "Person",
-      "name": "Swapnil Sanap"
+      "@id": `${SITE_URL}/#person`
     }
+  };
+}
+
+/**
+ * Generate SoftwareSourceCode schema for a portfolio project.
+ */
+export function generateProjectSchema(project) {
+  const projectUrl = `${SITE_URL}/projects/${project.slug}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "@id": `${projectUrl}#project`,
+    "name": project.title,
+    "description": project.fullDescription || project.description,
+    "url": projectUrl,
+    "image": absoluteUrl(project.detailImage || project.imageSrc),
+    "author": {
+      "@id": `${SITE_URL}/#person`
+    },
+    "programmingLanguage": project.techStack,
+    "codeRepository": project.githubLink,
+    "sameAs": [project.liveDemoLink, project.githubLink].filter(Boolean)
+  };
+}
+
+/**
+ * Generate a simple Home > Project breadcrumb trail.
+ */
+export function generateProjectBreadcrumbSchema(project) {
+  const projectUrl = `${SITE_URL}/projects/${project.slug}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": `${projectUrl}#breadcrumb`,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": SITE_URL
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": project.title,
+        "item": projectUrl
+      }
+    ]
   };
 }

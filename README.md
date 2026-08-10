@@ -80,10 +80,17 @@ Copy `.env.example` to `.env.local`, then provide the services you want to enabl
 ```env
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_GA_ID=G-YOUR_MEASUREMENT_ID
+NEXT_PUBLIC_GTM_ID=GTM-YOUR_CONTAINER_ID
+NEXT_PUBLIC_ANALYTICS_MODE=direct
 APPLE_SMTP_USER=your-apple-id@example.com
 APPLE_SMTP_PASS=your-app-specific-password
 MAIL_FROM=hello@example.com
 ```
+
+`NEXT_PUBLIC_ANALYTICS_MODE=direct` sends GA4 events through the Google tag while
+also exposing named events in GTM's data layer. Change it to `gtm` only after the
+GTM container has a published Google tag and event mappings; this prevents GA4
+pageviews and interaction events from being counted twice.
 
 ### 5. Start the Development Server
 ```bash

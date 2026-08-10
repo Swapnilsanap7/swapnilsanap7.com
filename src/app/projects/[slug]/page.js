@@ -1,6 +1,11 @@
 import { notFound } from 'next/navigation';
 import ProjectDetail from '../../../components/features/ProjectDetail';
 import { PROJECTS_DATA } from '../../../lib/constants';
+import {
+  generateProjectBreadcrumbSchema,
+  generateProjectSchema,
+  SITE_URL,
+} from '../../../lib/utils/seo';
 
 export default async function ProjectDetailPage({ params }) {
   const { slug } = await params;
@@ -10,7 +15,22 @@ export default async function ProjectDetailPage({ params }) {
     notFound();
   }
 
-  return <ProjectDetail project={project} />;
+  const structuredData = [
+    generateProjectSchema(project),
+    generateProjectBreadcrumbSchema(project),
+  ];
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
+        }}
+      />
+      <ProjectDetail project={project} />
+    </>
+  );
 }
 
 // Generate static params for known projects
@@ -28,16 +48,50 @@ export async function generateMetadata({ params }) {
   if (!project) {
     return {
       title: 'Project Not Found',
+      description: 'The requested portfolio project could not be found.',
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
+  const canonicalUrl = `${SITE_URL}/projects/${project.slug}`;
+  const socialImage = project.detailImage || project.imageSrc;
+  const socialImageAlt = `${project.title} project preview`;
+
   return {
-    title: `${project.title} | Swapnil Sanap`,
+    title: project.title,
     description: project.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: canonicalUrl,
+      siteName: 'Swapnil Sanap Portfolio',
       title: project.title,
       description: project.description,
-      images: [project.imageSrc],
+      images: [
+        {
+          url: socialImage,
+          alt: socialImageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: '@swapnilsanap7',
+      creator: '@swapnilsanap7',
+      title: project.title,
+      description: project.description,
+      images: [
+        {
+          url: socialImage,
+          alt: socialImageAlt,
+        },
+      ],
     },
   };
 }

@@ -8,15 +8,15 @@ import { useEffect, useRef } from 'react';
 gsap.registerPlugin(ScrollTrigger);
 
 const techIcons = [
-  '/icons/react.svg',
-  '/icons/node.svg',
-  '/icons/tailwind.svg',
-  '/icons/drupal.svg',
-  '/icons/js.svg',
-  '/icons/ts.svg',
-  '/icons/next.js.svg',
-  '/icons/git.svg',
-  '/icons/mysql.svg',
+  { src: '/icons/react.svg', name: 'React' },
+  { src: '/icons/node.svg', name: 'Node.js' },
+  { src: '/icons/tailwind.svg', name: 'Tailwind CSS' },
+  { src: '/icons/drupal.svg', name: 'Drupal' },
+  { src: '/icons/js.svg', name: 'JavaScript' },
+  { src: '/icons/ts.svg', name: 'TypeScript' },
+  { src: '/icons/next.js.svg', name: 'Next.js' },
+  { src: '/icons/git.svg', name: 'Git' },
+  { src: '/icons/mysql.svg', name: 'MySQL' },
 ];
 
 export default function TechCloud() {
@@ -86,14 +86,14 @@ export default function TechCloud() {
           <div key={cloneIdx} className="flex flex-col gap-4">
             {rows.map((row, i) => (
               <div key={i} className={`flex gap-4 ${i % 2 !== 0 ? 'ml-6' : ''}`}>
-                {row.map((src, j) => (
+                {row.map((tech, j) => (
                   <div
-                    key={j}
+                    key={tech.name}
                     className="transition-transform duration-300 hover:scale-125 hover:drop-shadow-lg"
                   >
                     <Image
-                      src={src}
-                      alt="tech"
+                      src={tech.src}
+                      alt={cloneIdx === 0 ? `${tech.name} logo` : ''}
                       width={48}
                       height={48}
                       className="object-contain"

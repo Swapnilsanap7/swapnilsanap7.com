@@ -1,17 +1,25 @@
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { Suspense } from 'react';
+import PageViewTracker from '../components/features/PageViewTracker';
 import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 import SmoothScrollWrapper from '../components/layout/SmoothScrollWrapper';
 import { generatePersonSchema, generateWebSiteSchema } from '../lib/utils/seo';
 import './globals.css';
 
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+const ANALYTICS_MODE = process.env.NEXT_PUBLIC_ANALYTICS_MODE === 'gtm' ? 'gtm' : 'direct';
+const ANALYTICS_ENABLED = process.env.NODE_ENV === 'production';
+const DIRECT_GA_ENABLED = ANALYTICS_ENABLED && ANALYTICS_MODE === 'direct' && Boolean(GA_ID);
+const GTM_ENABLED = ANALYTICS_ENABLED && Boolean(GTM_ID);
 
 export const metadata = {
   title: {
     default: 'Swapnil Sanap - Full Stack Developer & Software Engineer',
     template: '%s | Swapnil Sanap'
   },
-  description: 'Experienced Full Stack Developer specializing in React, Next.js, Node.js, and modern web technologies. MS in Computer Science from University of Illinois Springfield. Available for freelance projects and full-time opportunities.',
+  description: 'Portfolio of Swapnil Sanap, a full-stack software engineer building secure web products and AI tools with Next.js, Node.js, React, and Python.',
   keywords: [
     'Swapnil Sanap',
     'Full Stack Developer',
@@ -53,7 +61,7 @@ export const metadata = {
     url: 'https://swapnilsanap7.com',
     siteName: 'Swapnil Sanap Portfolio',
     title: 'Swapnil Sanap - Full Stack Developer & Software Engineer',
-    description: 'Experienced Full Stack Developer specializing in React, Next.js, Node.js, and modern web technologies. MS in Computer Science from University of Illinois Springfield.',
+    description: 'Portfolio of Swapnil Sanap, a full-stack software engineer building secure web products and AI tools with Next.js, Node.js, React, and Python.',
     images: [
       {
         url: '/og.png',
@@ -69,7 +77,7 @@ export const metadata = {
     site: '@swapnilsanap7',
     creator: '@swapnilsanap7',
     title: 'Swapnil Sanap - Full Stack Developer & Software Engineer',
-    description: 'Experienced Full Stack Developer specializing in React, Next.js, Node.js, and modern web technologies.',
+    description: 'Portfolio of Swapnil Sanap, a full-stack software engineer building secure web products and AI tools with Next.js, Node.js, React, and Python.',
     images: ['/og.png'],
   },
   robots: {
@@ -105,13 +113,11 @@ export default function RootLayout({ children }) {
             __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})();`,
           }}
         />
-        <GoogleTagManager gtmId="GTM-5S63WMNJ" />
-
         {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify([personSchema, websiteSchema])
+            __html: JSON.stringify([personSchema, websiteSchema]).replace(/</g, '\\u003c')
           }}
         />
         <link rel="icon" href="/assets/favicons/main-logo.svg" type="image/svg+xml" />
@@ -120,6 +126,13 @@ export default function RootLayout({ children }) {
         <meta name="color-scheme" content="light dark" />
       </head>
       <body className="bg-[var(--light)] dark:bg-[var(--dark)] text-black dark:text-white transition-colors duration-500">
+        {GTM_ENABLED && <GoogleTagManager gtmId={GTM_ID} />}
+        {DIRECT_GA_ENABLED && <GoogleAnalytics gaId={GA_ID} />}
+        {(GTM_ENABLED || DIRECT_GA_ENABLED) && (
+          <Suspense fallback={null}>
+            <PageViewTracker />
+          </Suspense>
+        )}
         <SmoothScrollWrapper>
           <Navbar />
           <main className="relative w-full min-h-screen px-4 sm:px-6 lg:px-8">

@@ -118,7 +118,7 @@ export const PROJECTS_DATA = {
     slug: 'splitxpense',
     title: 'SplitExpense – Bill Splitting Web App',
     subtitle: 'A seamless way to split bills, track expenses, and settle balances',
-    description: 'A split expense tracker for groups.',
+    description: 'A responsive bill-splitting app for creating groups, sharing expenses, tracking balances, and settling costs through clear workflows.',
     fullDescription: 'SplitExpense is a modern bill-splitting platform built to make sharing expenses effortless. It enables users to create groups, add expenses, split costs evenly or unevenly, track balances, and settle up in real time. Designed with a clean UI, secure backend, and optimized workflows to ensure transparency and convenience for group finances.',
     displayType: 'browser',
     imageSrc: '/project/splitxpense/thumbnail.png',

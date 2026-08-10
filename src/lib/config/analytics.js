@@ -1,39 +1,79 @@
-/**
- * Google Tag Manager configuration
- * Replace 'GTM_ID' with your actual Google Tag Manager ID
- */
+/** Google Tag Manager and data-layer event configuration. */
 
-import { sendGTMEvent } from '@next/third-parties/google';
+import { sendGAEvent, sendGTMEvent } from '@next/third-parties/google';
 
-export const GTM_ID = 'GTM-5S63WMNJ';
+export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
+export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || '';
+export const ANALYTICS_MODE = process.env.NEXT_PUBLIC_ANALYTICS_MODE === 'gtm' ? 'gtm' : 'direct';
+
+const isProductionBrowser = () => (
+  typeof window !== 'undefined'
+  && process.env.NODE_ENV === 'production'
+);
+
+const canPushToGTM = () => isProductionBrowser() && Boolean(GTM_ID);
+const canSendDirectGA = () => (
+  isProductionBrowser()
+  && ANALYTICS_MODE === 'direct'
+  && Boolean(GA_ID)
+);
+
+const currentPageParams = (url) => ({
+  page_path: url,
+  page_location: window.location.href,
+  page_title: document.title,
+});
 
 // Log page views
 export const pageview = (url) => {
-  if (typeof window !== 'undefined') {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[GTM Pageview] ${url}`);
-    }
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[GTM Pageview] ${url}`);
+  }
+
+  if (!isProductionBrowser()) return;
+
+  const params = currentPageParams(url);
+
+  // Keep route changes visible in the GTM data layer. In `gtm` mode, the
+  // container maps this custom event to GA4's `page_view` event.
+  if (canPushToGTM()) {
     sendGTMEvent({
-      event: 'page_view',
-      page_path: url,
+      event: 'virtual_page_view',
+      ...params,
     });
+  }
+
+  // In `direct` mode, gtag sends the SPA pageview without waiting for a GTM
+  // container change. The initial pageview is sent by GoogleAnalytics.
+  if (canSendDirectGA()) {
+    sendGAEvent('event', 'page_view', params);
   }
 };
 
 // Log specific events
 export const event = ({ action, category, label, value, params = {} }) => {
-  if (typeof window !== 'undefined') {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[GTM Event] action: ${action}, category: ${category}, label: ${label}, value: ${value}`, params);
-    }
-    sendGTMEvent({
-      event: action,
-      event_category: category,
-      event_label: label,
-      value: value,
-      ...params,
-    });
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[GTM Event] action: ${action}, category: ${category}, label: ${label}, value: ${value}`, params);
   }
+
+  if (!isProductionBrowser()) return;
+
+  const eventParams = {
+    ...(category ? { event_category: category } : {}),
+    ...(label ? { event_label: label } : {}),
+    ...(value !== undefined ? { value } : {}),
+    ...params,
+  };
+
+  // Push named application events for GTM Preview and any non-GA tags.
+  if (canPushToGTM()) sendGTMEvent({
+    event: action,
+    ...eventParams,
+  });
+
+  // Direct GA4 delivery remains active only in `direct` mode. Switching the
+  // environment to `gtm` disables this call before GTM GA4 tags are enabled.
+  if (canSendDirectGA()) sendGAEvent('event', action, eventParams);
 };
 
 // Track contact form submissions
@@ -172,5 +212,3 @@ export const trackSectionView = (sectionId) => {
     params: { section_id: sectionId },
   });
 };
-
-

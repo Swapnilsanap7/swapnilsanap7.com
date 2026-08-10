@@ -9,7 +9,7 @@ import Skills from '../components/sections/Skills/Skills';
 // Enhanced metadata for the home page
 export const metadata = {
   title: 'Swapnil Sanap - Full Stack Developer & Software Engineer',
-  description: 'Professional portfolio of Swapnil Sanap, an experienced Full Stack Developer with MS in Computer Science from University of Illinois Springfield. Specializing in React, Next.js, Node.js, and modern web technologies.',
+  description: 'Portfolio of Swapnil Sanap, a full-stack software engineer building secure web products and AI tools with Next.js, Node.js, React, and Python.',
   keywords: [
     'Swapnil Sanap',
     'Full Stack Developer',
@@ -27,7 +27,7 @@ export const metadata = {
   ],
   openGraph: {
     title: 'Swapnil Sanap - Full Stack Developer Portfolio',
-    description: 'Experienced Full Stack Developer specializing in modern web technologies. View my projects, experience, and skills.',
+    description: 'Explore full-stack projects, professional experience, and software engineering skills from Swapnil Sanap.',
     url: 'https://swapnilsanap7.com',
     type: 'website',
     images: [
@@ -42,7 +42,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Swapnil Sanap - Full Stack Developer Portfolio',
-    description: 'Experienced Full Stack Developer specializing in modern web technologies.',
+    description: 'Explore full-stack projects, professional experience, and software engineering skills from Swapnil Sanap.',
     images: ['/og.png'],
   },
   alternates: {

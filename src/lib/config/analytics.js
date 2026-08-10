@@ -2,7 +2,7 @@
 
 import { sendGAEvent, sendGTMEvent } from '@next/third-parties/google';
 
-export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
+export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-5S63WMNJ';
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || '';
 export const ANALYTICS_MODE = process.env.NEXT_PUBLIC_ANALYTICS_MODE === 'gtm' ? 'gtm' : 'direct';
 

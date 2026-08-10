@@ -7,7 +7,7 @@ import SmoothScrollWrapper from '../components/layout/SmoothScrollWrapper';
 import { generatePersonSchema, generateWebSiteSchema } from '../lib/utils/seo';
 import './globals.css';
 
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-5S63WMNJ';
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const ANALYTICS_MODE = process.env.NEXT_PUBLIC_ANALYTICS_MODE === 'gtm' ? 'gtm' : 'direct';
 const ANALYTICS_ENABLED = process.env.NODE_ENV === 'production';

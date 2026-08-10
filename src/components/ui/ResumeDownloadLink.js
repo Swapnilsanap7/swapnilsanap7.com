@@ -8,7 +8,7 @@ export default function ResumeDownloadLink() {
       href="/assets/documents/Swapnil_Sanap_Resume.pdf"
       download="Swapnil_Sanap_Resume.pdf"
       onClick={() => trackResumeDownload('resume_page')}
-      className="inline-flex items-center gap-2 px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-lg hover:shadow-xl font-medium"
+      className="inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors shadow-lg hover:shadow-xl font-medium"
       aria-label="Download Swapnil Sanap Resume as PDF"
     >
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

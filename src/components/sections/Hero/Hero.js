@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import SectionWrapper from '../../layout/SectionWrapper';
 import ResumeButton from '../../ui/ResumeButton';
+import ResumeDownloadLink from '../../ui/ResumeDownloadLink';
 import Magnetic from '../../ui/Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -131,6 +132,11 @@ export default function Hero() {
           <Magnetic>
             <div className="w-full">
               <ResumeButton />
+            </div>
+          </Magnetic>
+          <Magnetic>
+            <div className="w-full">
+              <ResumeDownloadLink />
             </div>
           </Magnetic>
         </div>

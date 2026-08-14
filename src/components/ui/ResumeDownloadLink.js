@@ -2,13 +2,13 @@
 
 import { trackResumeDownload } from '../../lib/config/analytics';
 
-export default function ResumeDownloadLink() {
+export default function ResumeDownloadLink({ location = 'hero', className = '' }) {
   return (
     <a
       href="/assets/documents/Swapnil_Sanap_Resume.pdf"
       download="Swapnil_Sanap_Resume.pdf"
-      onClick={() => trackResumeDownload('resume_page')}
-      className="inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors shadow-lg hover:shadow-xl font-medium"
+      onClick={() => trackResumeDownload(location)}
+      className={`inline-flex w-full items-center justify-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors shadow-lg hover:shadow-xl font-medium ${className}`}
       aria-label="Download Swapnil Sanap Resume as PDF"
     >
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

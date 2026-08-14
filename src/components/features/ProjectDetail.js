@@ -6,7 +6,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { trackGithubClick, trackProjectView, trackLiveDemoClick, trackProjectCodeClick } from '../../lib/config/analytics';
+import {
+  trackGithubClick,
+  trackLiveDemoClick,
+  trackProjectCodeClick,
+  trackProjectView,
+} from '../../lib/config/analytics';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +26,7 @@ export default function ProjectDetail({ project }) {
   useEffect(() => {
     setMounted(true);
   }, []);
-  
+
   // Animation refs
   const backButtonRef = useRef(null);
   const heroRef = useRef(null);
@@ -41,7 +46,7 @@ export default function ProjectDetail({ project }) {
         opacity: 0,
         x: -20,
         duration: 0.6,
-        ease: "power2.out"
+        ease: 'power2.out',
       });
 
       // Hero section animations
@@ -50,7 +55,7 @@ export default function ProjectDetail({ project }) {
         y: 20,
         duration: 0.6,
         delay: 0.1,
-        ease: "power2.out"
+        ease: 'power2.out',
       });
 
       gsap.from(descriptionRef.current, {
@@ -58,7 +63,7 @@ export default function ProjectDetail({ project }) {
         y: 20,
         duration: 0.6,
         delay: 0.2,
-        ease: "power2.out"
+        ease: 'power2.out',
       });
 
       gsap.from(buttonsRef.current, {
@@ -66,7 +71,7 @@ export default function ProjectDetail({ project }) {
         y: 20,
         duration: 0.6,
         delay: 0.3,
-        ease: "power2.out"
+        ease: 'power2.out',
       });
 
       gsap.from(imageRef.current, {
@@ -74,7 +79,7 @@ export default function ProjectDetail({ project }) {
         x: 50,
         duration: 0.6,
         delay: 0.2,
-        ease: "power2.out"
+        ease: 'power2.out',
       });
 
       // ScrollTrigger animations for sections
@@ -88,7 +93,7 @@ export default function ProjectDetail({ project }) {
           opacity: 0,
           y: 50,
           duration: 0.6,
-          ease: "power2.out"
+          ease: 'power2.out',
         });
       });
 
@@ -104,7 +109,7 @@ export default function ProjectDetail({ project }) {
           y: 30,
           duration: 0.5,
           delay: index * 0.1,
-          ease: "power2.out"
+          ease: 'power2.out',
         });
       });
 
@@ -120,7 +125,7 @@ export default function ProjectDetail({ project }) {
           scale: 0.8,
           duration: 0.4,
           delay: index * 0.1,
-          ease: "power2.out"
+          ease: 'power2.out',
         });
       });
 
@@ -136,7 +141,7 @@ export default function ProjectDetail({ project }) {
           scale: 0.9,
           duration: 0.5,
           delay: index * 0.1,
-          ease: "power2.out"
+          ease: 'power2.out',
         });
       });
     });
@@ -204,7 +209,7 @@ export default function ProjectDetail({ project }) {
           first.focus();
         }
       }
-      
+
       switch (e.key) {
         case 'Escape':
           closeModal();
@@ -231,8 +236,17 @@ export default function ProjectDetail({ project }) {
     };
   }, [isModalOpen]);
 
+  const demoHostname = (() => {
+    if (!project.liveDemoLink) return `${project.title.toLowerCase().replace(/\s+/g, '')}.com`;
+    try {
+      return new URL(project.liveDemoLink).hostname;
+    } catch {
+      return project.liveDemoLink.replace(/^https?:\/\//, '').split('/')[0] || `${project.title.toLowerCase().replace(/\s+/g, '')}.com`;
+    }
+  })();
+
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       {/* Fixed Back Navigation */}
       <div
         ref={backButtonRef}
@@ -277,7 +291,7 @@ export default function ProjectDetail({ project }) {
                 </p>
                 {/* Supporting description */}
                 <p className="text-lg text-[var(--dark)]/60 dark:text-white/60 leading-relaxed max-w-lg">
-                  {project.fullDescription.split('.')[0]}.
+                  {project.fullDescription ? `${project.fullDescription.split('.')[0]}.` : project.description}
                 </p>
               </div>
 
@@ -323,7 +337,7 @@ export default function ProjectDetail({ project }) {
               className="relative flex justify-center items-center"
             >
               <div className="relative">
-                {/* Device Mockup or Screenshot - Manual Selection Only */}
+                {/* Device Mockup or Screenshot */}
                 {project.hero?.mainImage || project.imageSrc ? (
                   project.displayType === 'browser' ? (
                     // Browser/Laptop Mockup
@@ -340,8 +354,8 @@ export default function ProjectDetail({ project }) {
                               <span className="w-3 h-3 rounded-full bg-green-500"></span>
                             </div>
                             <div className="flex-1 mx-4">
-                              <div className="bg-gray-700 rounded-md px-3 py-1 text-xs text-gray-300 text-center">
-                                {project.liveDemoLink ? new URL(project.liveDemoLink).hostname : `${project.title.toLowerCase().replace(/\s+/g, '')}.com`}
+                              <div className="bg-gray-700 rounded-md px-3 py-1 text-xs text-gray-300 text-center truncate">
+                                {demoHostname}
                               </div>
                             </div>
                           </div>
@@ -397,47 +411,14 @@ export default function ProjectDetail({ project }) {
                     </div>
                   )
                 ) : (
-                  /* Fallback if no image - Manual selection only */
-                  project.displayType === 'browser' ? (
-                    // Browser placeholder
-                    <div className="w-[300px] h-[188px] sm:w-[400px] sm:h-[250px] md:w-[500px] md:h-[312px] lg:w-[580px] lg:h-[362px] relative">
-                      <div className="relative w-full h-full bg-gradient-to-b from-gray-700 to-gray-800 rounded-2xl p-2 shadow-2xl">
-                        <div className="relative w-full h-full bg-black rounded-xl overflow-hidden border-2 border-gray-600">
-                          <div className="flex items-center gap-2 px-4 py-2 bg-gray-800 border-b border-gray-600">
-                            <div className="flex gap-2">
-                              <span className="w-3 h-3 rounded-full bg-red-500"></span>
-                              <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
-                              <span className="w-3 h-3 rounded-full bg-green-500"></span>
-                            </div>
-                            <div className="flex-1 mx-4">
-                              <div className="bg-gray-700 rounded-md px-3 py-1 text-xs text-gray-300 text-center">
-                                {project.title.toLowerCase().replace(/\s+/g, '')}.com
-                              </div>
-                            </div>
-                          </div>
-                          <div className="relative w-full h-[calc(100%-40px)] flex items-center justify-center">
-                            <div className="text-6xl opacity-20">💻</div>
-                            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/60 to-transparent"></div>
-                          </div>
-                        </div>
+                  // Fallback
+                  <div className="w-72 h-[432px] sm:w-80 sm:h-[480px] md:w-96 md:h-[580px] lg:w-[420px] lg:h-[640px] relative">
+                    <div className="relative w-full h-full bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-2 shadow-2xl">
+                      <div className="relative w-full h-full bg-black rounded-[2.5rem] flex items-center justify-center">
+                        <div className="text-6xl opacity-20">📱</div>
                       </div>
-                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-[calc(100%+40px)] h-6 bg-gradient-to-b from-gray-600 to-gray-700 rounded-b-3xl"></div>
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-blue-500/15 rounded-2xl -z-10 transform translate-y-6 blur-2xl"></div>
                     </div>
-                  ) : (
-                    // Mobile placeholder (default)
-                    <div className="w-72 h-[432px] sm:w-80 sm:h-[480px] md:w-96 md:h-[580px] lg:w-[420px] lg:h-[640px] relative">
-                      <div className="relative w-full h-full bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-2 shadow-2xl">
-                        <div className="relative w-full h-full bg-black rounded-[2.5rem] flex items-center justify-center">
-                          <div className="text-6xl opacity-20">📱</div>
-                          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/60 to-transparent rounded-b-[2.5rem]"></div>
-                        </div>
-                        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gray-600 rounded-full"></div>
-                        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-700 rounded-full"></div>
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-blue-500/20 rounded-[3rem] -z-10 transform translate-y-8 blur-2xl"></div>
-                    </div>
-                  )
+                  </div>
                 )}
               </div>
             </div>
@@ -466,7 +447,7 @@ export default function ProjectDetail({ project }) {
             </h2>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {project.features.map((feature, index) => (
+              {project.features.map((feature) => (
                 <div
                   key={feature.title}
                   className="feature-card bg-[var(--dark)]/5 dark:bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-[var(--dark)]/10 dark:border-white/10 hover:bg-[var(--dark)]/10 dark:hover:bg-white/10 hover:border-[var(--dark)]/20 dark:hover:border-white/20 transition-all duration-300"
@@ -482,14 +463,14 @@ export default function ProjectDetail({ project }) {
       )}
 
       {/* Tech Stack */}
-      <section className="py-20 px-6 md:px-16 ">
+      <section className="py-20 px-6 md:px-16">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="scroll-reveal text-3xl md:text-4xl font-bold mb-16 text-[var(--dark)] dark:text-white">
             Tech Stack
           </h2>
 
           <div className="flex flex-wrap justify-center gap-6">
-            {(project.techStackDetailed || project.techStack.map(tech => ({ name: tech }))).map((tech, index) => (
+            {(project.techStackDetailed || project.techStack.map(tech => ({ name: tech }))).map((tech) => (
               <div
                 key={tech.name}
                 className="tech-item flex items-center gap-3 bg-[var(--dark)]/10 dark:bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-[var(--dark)]/20 dark:border-white/20 hover:bg-[var(--dark)]/20 dark:hover:bg-white/20 transition-all duration-300"
@@ -560,7 +541,7 @@ export default function ProjectDetail({ project }) {
 
       {/* Challenges & Solutions */}
       {project.caseStudy && (
-        <section className="py-20 px-6 md:px-16 ">
+        <section className="py-20 px-6 md:px-16">
           <div className="max-w-4xl mx-auto">
             <h2 className="scroll-reveal text-3xl md:text-4xl font-bold mb-16 text-center text-[var(--dark)] dark:text-white">
               Challenges & Solutions

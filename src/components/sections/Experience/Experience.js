@@ -294,20 +294,17 @@ export default function Experience() {
       const items = timelineRef.current?.querySelectorAll('.timeline-item');
       if (items) {
         items.forEach((item, index) => {
-          // Adjust index for alternating x direction on desktop (only animate if visible or just use standard)
-          const isDesktopItem = item.closest('.hidden.md\\:block') !== null;
           gsap.from(item, {
             scrollTrigger: {
               trigger: item,
               start: 'top 80%',
               toggleActions: 'play none none none',
             },
-            x: isDesktopItem ? (index % 2 === 0 ? -50 : 50) : 0,
-            y: isDesktopItem ? 0 : 30, // slide up on mobile
+            y: 30,
             opacity: 0,
-            duration: 1,
+            duration: 0.8,
             ease: 'power2.out',
-            delay: (index % 4) * 0.2,
+            delay: (index % 4) * 0.15,
           });
         });
       }
@@ -325,7 +322,7 @@ export default function Experience() {
             transformOrigin: 'left center',
             duration: 0.8,
             ease: 'power2.out',
-            delay: (index + 1) * 0.3,
+            delay: (index + 1) * 0.2,
           });
         });
       }
@@ -351,57 +348,39 @@ export default function Experience() {
 
       {/* Timeline Container */}
       <div ref={containerRef} className="relative max-w-6xl mx-auto">
-        <div ref={timelineRef} className="relative">
-
-          {/* Desktop Layout */}
-          <div className="hidden md:block">
-            {EXPERIENCE_DATA.map((item, index) => {
-              const isEven = index % 2 === 0;
-              return (
-                <div key={item.id}>
-                  <div className={`timeline-item flex ${isEven ? 'justify-start' : 'justify-end'} mb-8`}>
-                    <div className={`w-1/2 ${isEven ? 'pl-12' : 'pr-12'}`}>
-                      <ExperienceCard
-                        item={item}
-                        isExpanded={expandedCard === item.id}
-                        onToggle={() => toggleExpand(item.id)}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Wavy Connector (except for last item) */}
-                  {index < EXPERIENCE_DATA.length - 1 && (
-                    <div className="wavy-connector flex justify-center mb-8">
-                      <svg width="400" height="40" viewBox="0 0 400 40" className="text-blue-400/60">
-                        <path
-                          d={index % 2 === 0 ? "M0,20 Q100,35 200,20 T400,20" : "M0,20 Q100,5 200,20 T400,20"}
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeDasharray="5,5"
-                        />
-                        <circle cx="200" cy="20" r="4" fill="currentColor" />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Mobile Layout - Simple Vertical */}
-          <div className="md:hidden space-y-6">
-            {EXPERIENCE_DATA.map((item) => (
+        <div ref={timelineRef} className="relative space-y-6 md:space-y-0">
+          {EXPERIENCE_DATA.map((item, index) => {
+            const isEven = index % 2 === 0;
+            return (
               <div key={item.id} className="timeline-item">
-                <ExperienceCard
-                  item={item}
-                  isExpanded={expandedCard === item.id}
-                  onToggle={() => toggleExpand(item.id)}
-                />
-              </div>
-            ))}
-          </div>
+                <div className={`flex w-full ${isEven ? 'md:justify-start' : 'md:justify-end'} md:mb-8`}>
+                  <div className={`w-full md:w-1/2 ${isEven ? 'md:pl-12' : 'md:pr-12'}`}>
+                    <ExperienceCard
+                      item={item}
+                      isExpanded={expandedCard === item.id}
+                      onToggle={() => toggleExpand(item.id)}
+                    />
+                  </div>
+                </div>
 
+                {/* Wavy Connector on Desktop (except for last item) */}
+                {index < EXPERIENCE_DATA.length - 1 && (
+                  <div className="wavy-connector hidden md:flex justify-center mb-8">
+                    <svg width="400" height="40" viewBox="0 0 400 40" className="text-blue-400/60">
+                      <path
+                        d={index % 2 === 0 ? "M0,20 Q100,35 200,20 T400,20" : "M0,20 Q100,5 200,20 T400,20"}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeDasharray="5,5"
+                      />
+                      <circle cx="200" cy="20" r="4" fill="currentColor" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </SectionWrapper>

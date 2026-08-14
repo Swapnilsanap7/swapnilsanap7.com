@@ -3,11 +3,9 @@
 import { Environment } from '@react-three/drei';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { gsap } from 'gsap';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { STLLoader } from 'three-stdlib';
-
-import { useMemo } from 'react';
 
 function Model() {
   const rawGeometry = useLoader(STLLoader, '/models/model.stl');
@@ -104,11 +102,17 @@ function Model() {
   });
 
   const geometry = useMemo(() => {
-    const g = rawGeometry.clone(); // avoid mutating cached geometry
+    const g = rawGeometry.clone();
     g.computeBoundingBox();
-    g.center(); // moves geometry so center is at 0,0,0
+    g.center();
     return g;
   }, [rawGeometry]);
+
+  useEffect(() => {
+    return () => {
+      geometry.dispose();
+    };
+  }, [geometry]);
 
   return (
     <mesh
@@ -155,4 +159,3 @@ export default function StlViewer() {
     </div>
   );
 }
-

@@ -71,7 +71,7 @@ export default function Skills() {
             opacity: 0,
             y: 20,
             duration: 0.6,
-            ease: "easeOut",
+            ease: 'power2.out',
             delay: index * 0.1
           });
         }
@@ -89,16 +89,13 @@ export default function Skills() {
         duration: 0.6,
         delay: 0.4,
       });
-
-      // Removed progress bar animation
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Handle icon click (hidden feature)
+  // Handle icon click
   const handleIconClick = (skill) => {
-    // Smooth scroll to projects section to show related work
     document.querySelector(skill.projectLink)?.scrollIntoView({ 
       behavior: 'smooth',
       block: 'start'
@@ -166,7 +163,7 @@ export default function Skills() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {additionalSkills.map((category, categoryIndex) => (
+            {additionalSkills.map((category) => (
               <div
                 key={category.category}
                 className="space-y-3"
@@ -175,7 +172,7 @@ export default function Skills() {
                   {category.category}
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill, skillIndex) => (
+                  {category.skills.map((skill) => (
                     <span
                       key={skill}
                       className="px-3 py-1.5 bg-gray-200 dark:bg-gray-900/70 border border-gray-400 dark:border-gray-700 rounded-full 

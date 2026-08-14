@@ -8,7 +8,7 @@ export const EXPERIENCE_DATA = [
     id: 'dxc',
     title: 'Analyst I Software Engineering',
     company: 'DXC Technology',
-    duration: 'June 2026 – Present',
+    duration: 'June 2024 – Present',
     logoSrc: '/logo/DXC/DXC-Veritcal-Tagline-Full-Color-Dark.png',
     themeColor: 'indigo',
     tags: [

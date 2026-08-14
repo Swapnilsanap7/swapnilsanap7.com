@@ -2,7 +2,6 @@
 
 import { gsap } from 'gsap';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { trackResumeView } from '../../lib/config/analytics';
 
@@ -25,7 +24,7 @@ export default function ResumeButton() {
         gsap.to(container, {
           width: 320,
           duration: 0.3,
-          ease: "power2.out"
+          ease: 'power2.out',
         });
       });
     };
@@ -36,7 +35,7 @@ export default function ResumeButton() {
         gsap.to(container, {
           width: 180,
           duration: 0.3,
-          ease: "power2.out"
+          ease: 'power2.out',
         });
       });
     };
@@ -53,21 +52,22 @@ export default function ResumeButton() {
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
     if (!previewRef.current) return;
 
     const ctx = gsap.context(() => {
       if (hovered) {
-        gsap.fromTo(previewRef.current, 
-          { opacity: 0, height: 0 },
-          { opacity: 1, height: 160, duration: 0.3, ease: "power2.out" }
-        );
+        gsap.to(previewRef.current, {
+          opacity: 1,
+          height: 160,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
       } else {
         gsap.to(previewRef.current, {
           opacity: 0,
           height: 0,
           duration: 0.3,
-          ease: "power2.out"
+          ease: 'power2.out',
         });
       }
     });
@@ -87,25 +87,23 @@ export default function ResumeButton() {
         ref={containerRef}
         className="bg-white/10 border border-blue-500 text-blue-400 rounded-xl overflow-hidden transition-all duration-300 cursor-pointer backdrop-blur-md shadow-md w-[180px]"
       >
-        <div className="px-6 py-2 rounded-x1 transition text-center font-medium md:w-auto">
+        <div className="px-6 py-2 rounded-xl transition text-center font-medium md:w-auto">
           Resume
         </div>
 
-        {/* Image preview */}
-        {hovered && (
-          <div
-            ref={previewRef}
-            className="bg-black bg-opacity-60 overflow-hidden"
-          >
-            <Image
-              src="/assets/images/resume-preview.webp"
-              alt="Resume preview"
-              width={320}
-              height={160}
-              className="object-cover w-full h-full"
-            />
-          </div>
-        )}
+        {/* Image preview - kept in DOM with animated height/opacity */}
+        <div
+          ref={previewRef}
+          className="bg-black bg-opacity-60 overflow-hidden h-0 opacity-0 pointer-events-none"
+        >
+          <Image
+            src="/assets/images/resume-preview.webp"
+            alt="Resume preview"
+            width={320}
+            height={160}
+            className="object-cover w-full h-full"
+          />
+        </div>
       </div>
     </a>
   );

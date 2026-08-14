@@ -54,32 +54,14 @@ export default function Home() {
   return (
     <>
       <ScrollTracker />
-      {/* Semantic HTML structure for better SEO */}
-      <article>
-        <header>
-          <Hero />
-        </header>
-        
-        <section aria-label="About Swapnil Sanap">
-          <About />
-        </section>
-        
-        <section aria-label="Technical Skills">
-          <Skills />
-        </section>
-        
-        <section aria-label="Professional Experience">
-          <Experience />
-        </section>
-        
-        <section aria-label="Portfolio Projects">
-          <Project />
-        </section>
-        
-        <section aria-label="Contact Information">
-          <Contact />
-        </section>
-      </article>
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Experience />
+        <Project />
+        <Contact />
+      </main>
     </>
   );
 }

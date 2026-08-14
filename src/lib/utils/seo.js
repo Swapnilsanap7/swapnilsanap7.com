@@ -66,7 +66,8 @@ export function generatePersonSchema() {
     "email": "hello@swapnilsanap7.com",
     "sameAs": [
       "https://github.com/Swapnilsanap7",
-      "https://www.linkedin.com/in/swapnilsanap7/"
+      "https://www.linkedin.com/in/swapnilsanap7/",
+      "https://x.com/swapnilsanap7"
     ],
     "jobTitle": "Full Stack Developer",
     "worksFor": {

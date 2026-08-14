@@ -62,7 +62,7 @@ export const NAVIGATION = {
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
     { name: 'Experience', href: '#experience' },
-    { name: 'Projects', href: '#projects' },
+    { name: 'Projects', href: '#project' },
     { name: 'Contact', href: '#contact' },
   ],
   social: [
@@ -129,11 +129,11 @@ export const PROJECT_CATEGORIES = {
 // Form Constants
 export const FORM_CONFIG = {
   contact: {
-    endpoint: `https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID}`,
+    endpoint: '/api/contact',
     fields: {
       name: {
         minLength: 2,
-        maxLength: 50,
+        maxLength: 80,
         required: true,
       },
       email: {
@@ -141,13 +141,13 @@ export const FORM_CONFIG = {
         required: true,
       },
       subject: {
-        minLength: 5,
-        maxLength: 100,
+        minLength: 3,
+        maxLength: 120,
         required: true,
       },
       message: {
         minLength: 10,
-        maxLength: 1000,
+        maxLength: 3000,
         required: true,
       },
     },

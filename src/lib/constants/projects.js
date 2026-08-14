@@ -137,11 +137,9 @@ export const PROJECTS_DATA = {
       { icon: '⚡', title: 'Modern UI', description: 'Clean, intuitive, responsive interface built for ease of use.' }
     ],
     techStackDetailed: [
-      { name: 'React', icon: '/icons/react.svg', description: 'Component-based UI for interactive, dynamic screens.' },
-      { name: 'Node.js', icon: '/icons/node.svg', description: 'JavaScript runtime powering the backend APIs.' },
-      { name: 'Express', icon: '/icons/express.svg', description: 'Minimal backend framework for RESTful APIs.' },
-      { name: 'MongoDB', icon: '/icons/mongodb.svg', description: 'NoSQL database for group, user, and expense data.' },
-      { name: 'TailwindCSS', icon: '/icons/tailwind.svg', description: 'Utility-first framework enabling fast, consistent styling.' }
+      { name: 'Next.js', icon: '/icons/next.js.svg', description: 'App Router framework for seamless page routing and performance.' },
+      { name: 'TailwindCSS', icon: '/icons/tailwind.svg', description: 'Utility-first CSS framework for clean, responsive UI.' },
+      { name: 'Firebase', icon: '/icons/firebase-light-m.svg', iconDark: '/icons/firebase-dark-m.svg', description: 'Real-time database and authentication for shared expense tracking.' }
     ],
     gallery: [
       '/project/splitxpense/hero.png',

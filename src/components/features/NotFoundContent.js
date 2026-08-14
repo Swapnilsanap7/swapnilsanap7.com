@@ -85,7 +85,7 @@ export default function NotFoundContent() {
 
           <Link
             href="/#project"
-            className="text-green-400 hover:text-green-300 transition-colors font-medium"
+            className="text-emerald-700 dark:text-green-400 hover:text-emerald-800 dark:hover:text-green-300 transition-colors font-medium"
           >
             View Projects
           </Link>

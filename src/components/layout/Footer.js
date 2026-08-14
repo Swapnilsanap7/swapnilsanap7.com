@@ -1,6 +1,7 @@
 'use client';
 
 import { gsap } from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -12,22 +13,20 @@ import {
   trackLinkedinClick,
 } from '../../lib/config/analytics';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function Footer() {
   const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
     const toggleVisibility = () => {
-      // Use ScrollTrigger's scroll position instead of window.scrollY
       const scrollY = ScrollTrigger.getScrollFunc(window)() || window.scrollY;
       setShowScroll(scrollY > 300);
     };
 
-    // Listen to both native scroll and ScrollTrigger updates
     window.addEventListener('scroll', toggleVisibility);
     ScrollTrigger.addEventListener('scrollUpdate', toggleVisibility);
-    
+
     return () => {
       window.removeEventListener('scroll', toggleVisibility);
       ScrollTrigger.removeEventListener('scrollUpdate', toggleVisibility);
@@ -36,9 +35,14 @@ export default function Footer() {
 
   const scrollToTop = () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-    if (!reduceMotion) {
-      gsap.to(window, { duration: 1, scrollTo: 0, ease: "power2.out" });
+    if (reduceMotion) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    } else {
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: { y: 0 },
+        ease: 'power2.out',
+      });
     }
   };
 
@@ -48,20 +52,19 @@ export default function Footer() {
       {showScroll && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-20 right-6 bg-black/10 dark:bg-white/10 text-black dark:text-white p-2 rounded-full backdrop-blur-lg hover:bg-black/20 dark:hover:bg-white/20 transition z-50"
+          className="fixed bottom-20 right-6 bg-black/10 dark:bg-white/10 text-black dark:text-white p-2.5 rounded-full backdrop-blur-lg hover:bg-black/20 dark:hover:bg-white/20 transition-all duration-300 z-50 shadow-md hover:scale-110 active:scale-95"
           aria-label="Scroll to top"
         >
-          <FaArrowUp size={20} />
+          <FaArrowUp size={18} />
         </button>
       )}
 
       {/* Footer - sticks to bottom of content */}
       <footer className="w-full bg-transparent backdrop-blur-none shadow-none border-none text-gray-600 dark:text-gray-300 py-4 px-4 mt-auto">
         <section className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
-          
           {/* Center Text */}
           <div className="w-full text-sm text-center md:text-base order-2 md:order-1">
-            © {new Date().getFullYear()} Swapnil Sanap. All rights reserved. Made with ❤️ by Swapnil Sanap
+            © {new Date().getFullYear()} Swapnil Sanap. All rights reserved. Built with Next.js & TailwindCSS.
           </div>
 
           {/* Right: Socials */}

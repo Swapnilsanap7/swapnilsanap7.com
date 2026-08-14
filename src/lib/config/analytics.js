@@ -154,6 +154,15 @@ export const trackEmailClick = (location = 'unknown') => {
   });
 };
 
+export const trackTwitterClick = (location = 'unknown') => {
+  event({
+    action: 'twitter_click',
+    category: 'engagement',
+    label: location,
+    params: { location },
+  });
+};
+
 // Track contact section visibility
 export const trackContactSectionView = () => {
   event({

@@ -32,34 +32,35 @@ export default function TechCloud() {
 
   useEffect(() => {
     const el = scrollRef.current;
+    if (!el || !containerRef.current) return;
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const tl = gsap.to(el, {
-      x: "-50%",
-      duration: 20,
-      repeat: -1,
-      ease: "linear",
-    });
+    const ctx = gsap.context(() => {
+      const tl = gsap.to(el, {
+        x: '-50%',
+        duration: 20,
+        repeat: -1,
+        ease: 'linear',
+      });
 
-    tlRef.current = tl;
+      tlRef.current = tl;
 
-    // Scroll fade effect
-    gsap.from(containerRef.current, {
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 85%",
-        once: true,
-      },
-      opacity: 0,
-      y: 30,
-      duration: 1,
-      ease: "power2.out",
-    });
+      // Scroll fade effect
+      gsap.from(containerRef.current, {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 85%',
+          once: true,
+        },
+        opacity: 0,
+        y: 30,
+        duration: 1,
+        ease: 'power2.out',
+      });
+    }, containerRef);
 
-    return () => {
-      tl.kill(); // IMPORTANT cleanup
-    };
+    return () => ctx.revert();
   }, []);
 
   return (

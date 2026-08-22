@@ -52,7 +52,10 @@ next-env.d.ts
 
 # ignored files
 /.agent/
+/.claude/
 /.agents/
 /ANALYTICS_TRACKING.md
 /SEO_GTM_GA4_PROGRESS.md
 /TESTING_GUIDE.md
+firebase-debug.log
+swapnilsanap7-e2397-f465a4b41b43.json

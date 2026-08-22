@@ -87,6 +87,7 @@ export default function Navbar() {
               <Link href="/#skills" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'skills')}>Skills</Link>
               <Link href="/#experience" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'experience')}>Experience</Link>
               <Link href="/#project" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'project')}>Projects</Link>
+              <Link href="/access" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors font-semibold">Request Access</Link>
               <Link href="/#contact" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium" onClick={(e) => handleSmoothScroll(e, 'contact')}>Contact</Link>
             </div>
 
@@ -127,16 +128,17 @@ export default function Navbar() {
             { id: 'skills', label: 'Skills' },
             { id: 'experience', label: 'Experience' },
             { id: 'project', label: 'Projects' },
+            { id: 'access', label: 'Request Access', href: '/access' },
             { id: 'contact', label: 'Contact' },
           ].map((item, i) => (
             <Link
               key={item.id}
-              href={`/#${item.id}`}
+              href={item.href || `/#${item.id}`}
               onClick={(e) => {
-                handleSmoothScroll(e, item.id);
+                if (!item.href) handleSmoothScroll(e, item.id);
                 setMenuOpen(false);
               }}
-              className="text-gray-900 dark:text-white text-2xl font-medium transform transition-all translate-x-0 opacity-100 hover:text-blue-600 dark:hover:text-blue-400"
+              className={`text-2xl font-medium transform transition-all translate-x-0 opacity-100 hover:text-blue-600 dark:hover:text-blue-400 ${item.href ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}
               style={{ transitionDelay: `${i * 0.08}s` }}
             >
               {item.label}

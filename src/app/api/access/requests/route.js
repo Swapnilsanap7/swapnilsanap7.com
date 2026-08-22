@@ -12,9 +12,18 @@ import {
 
 export const runtime = 'nodejs';
 const MAX_BODY_BYTES = 12 * 1024;
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+
+function hasRequiredProductionConfiguration() {
+  return Boolean(
+    process.env.TURNSTILE_SECRET_KEY
+    && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    && process.env.ACCESS_HUB_IP_SALT
+  );
+}
 
 async function verifyTurnstile(token, ip) {
-  if (!process.env.TURNSTILE_SECRET_KEY) return true;
+  if (!process.env.TURNSTILE_SECRET_KEY) return !IS_PRODUCTION;
   if (!token) return false;
   const form = new FormData();
   form.set('secret', process.env.TURNSTILE_SECRET_KEY);
@@ -36,6 +45,10 @@ export async function POST(request) {
 
   try {
     if (!isAllowedPublicOrigin(request)) return json({ error: 'This request origin is not allowed.' }, 403);
+    if (IS_PRODUCTION && !hasRequiredProductionConfiguration()) {
+      console.error('Access request endpoint is missing required production security configuration');
+      return json({ error: 'Access requests are temporarily unavailable.' }, 503);
+    }
     const rawBody = await request.text();
     if (Buffer.byteLength(rawBody) > MAX_BODY_BYTES) return json({ error: 'Request is too large.' }, 413);
 

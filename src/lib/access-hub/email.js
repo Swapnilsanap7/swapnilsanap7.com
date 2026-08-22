@@ -30,6 +30,8 @@ async function sendMail({ to, replyTo, subject, text, html }) {
       host: 'smtp.mail.me.com',
       port: 587,
       secure: false,
+      requireTLS: true,
+      tls: { minVersion: 'TLSv1.2' },
       auth: { user: process.env.APPLE_SMTP_USER, pass: process.env.APPLE_SMTP_PASS },
     });
     return transporter.sendMail({ from: `Swapnil Sanap <${from}>`, to, replyTo, subject, text, html });
@@ -87,4 +89,3 @@ export async function sendRequestRejectedEmail(request) {
     html: emailShell({ eyebrow: 'Request update', heading: 'Thanks for your interest.', body, actionLabel: 'View project story', actionUrl: `${siteUrl}/projects/${request.project_slug}`, footer: 'This is a personal review process. You can reply to this email if you believe important context was missed.' }),
   });
 }
-

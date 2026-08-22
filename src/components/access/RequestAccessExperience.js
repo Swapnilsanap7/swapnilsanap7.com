@@ -14,6 +14,7 @@ const ROLE_OPTIONS = [
 ];
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+const TURNSTILE_REQUIRED = process.env.NODE_ENV === 'production';
 
 export default function RequestAccessExperience({ projects, initialProject }) {
   const [form, setForm] = useState({ project: initialProject, name: '', email: '', role: '', reason: '', honeypot: '' });
@@ -65,7 +66,11 @@ export default function RequestAccessExperience({ projects, initialProject }) {
       setError('Please complete each field. A sentence or two about your interest is plenty.');
       return;
     }
-    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+    if (TURNSTILE_REQUIRED && !TURNSTILE_SITE_KEY) {
+      setError('Access requests are temporarily unavailable. Please try again shortly.');
+      return;
+    }
+    if (TURNSTILE_REQUIRED && !turnstileToken) {
       setError('Please complete the verification first.');
       return;
     }
@@ -201,4 +206,3 @@ export default function RequestAccessExperience({ projects, initialProject }) {
 function Field({ label, ...props }) {
   return <div><label htmlFor={props.name} className="mb-2 block text-sm font-semibold text-[var(--dark)] dark:text-white">{label}</label><input id={props.name} required {...props} className="w-full rounded-xl border border-[var(--dark)]/15 bg-white/70 px-4 py-3.5 text-[var(--dark)] outline-none transition placeholder:text-[var(--dark)]/30 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-white/15 dark:bg-slate-950/40 dark:text-white dark:placeholder:text-white/30" /></div>;
 }
-

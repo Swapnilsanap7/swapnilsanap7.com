@@ -131,12 +131,12 @@ export default function Navbar() {
           ].map((item, i) => (
             <Link
               key={item.id}
-              href={item.href || `/#${item.id}`}
+              href={`/#${item.id}`}
               onClick={(e) => {
-                if (!item.href) handleSmoothScroll(e, item.id);
+                handleSmoothScroll(e, item.id);
                 setMenuOpen(false);
               }}
-              className="text-2xl font-medium text-gray-900 transition-all translate-x-0 opacity-100 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
+              className="text-gray-900 dark:text-white text-2xl font-medium transform transition-all translate-x-0 opacity-100 hover:text-blue-600 dark:hover:text-blue-400"
               style={{ transitionDelay: `${i * 0.08}s` }}
             >
               {item.label}

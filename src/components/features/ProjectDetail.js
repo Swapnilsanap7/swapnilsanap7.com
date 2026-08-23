@@ -300,12 +300,6 @@ export default function ProjectDetail({ project }) {
                 ref={buttonsRef}
                 className="flex flex-wrap gap-4 pt-6"
               >
-                <Link
-                  href={`/access?project=${project.slug}`}
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl shadow-blue-500/25"
-                >
-                  Request Demo Access
-                </Link>
                 {/* Live Demo Button - Blue gradient */}
                 {project.liveDemoLink && (
                   <Link
@@ -313,7 +307,7 @@ export default function ProjectDetail({ project }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackLiveDemoClick(project.title, 'detail_hero')}
-                    className="bg-transparent border-2 border-[var(--dark)]/20 dark:border-white/20 hover:bg-[var(--dark)]/10 dark:hover:bg-white/10 text-[var(--dark)] dark:text-white px-6 py-3 sm:px-8 sm:py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-lg backdrop-blur-sm"
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl shadow-blue-500/25"
                   >
                     Live Demo
                   </Link>
@@ -580,19 +574,13 @@ export default function ProjectDetail({ project }) {
               Interested in this project?
             </h2>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href={`/access?project=${project.slug}`}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-xl shadow-blue-500/25"
-              >
-                Request Demo Access
-              </Link>
               {project.liveDemoLink && (
                 <Link
                   href={project.liveDemoLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => trackLiveDemoClick(project.title, 'detail_footer')}
-                  className="bg-transparent border-2 border-[var(--dark)]/20 dark:border-white/20 hover:bg-[var(--dark)]/10 dark:hover:bg-white/10 text-[var(--dark)] dark:text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-xl shadow-blue-500/25"
                 >
                   View Live Demo
                 </Link>

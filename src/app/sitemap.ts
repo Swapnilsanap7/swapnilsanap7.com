@@ -10,11 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 1,
     },
-    {
-      url: `${baseUrl}/access`,
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
   ]
   
   const projectPages = Object.keys(PROJECTS_DATA).map(slug => ({
